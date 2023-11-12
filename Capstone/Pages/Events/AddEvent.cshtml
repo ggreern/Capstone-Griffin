@@ -9,12 +9,16 @@
 </form>
 
 <form asp-page="AddEvent">
-    <input type="text" asp-for="NewEvent.EventName" placeholder="Event Name" />
+    <input type="text" asp-for="NewEvent.Name" placeholder="Event Name" />
+    <input type="text" asp-for="NewEvent.Address" placeholder="Address" />
     <input type="text" asp-for="NewEvent.RegistrationCost" placeholder="Registration Cost" />
     <input type="text" asp-for="NewEvent.EstimatedAttendance" placeholder="Estimated Attendance" />
     <input type="text" asp-for="NewEvent.StartDate" placeholder="Start Date" />
     <input type="text" asp-for="NewEvent.EndDate" placeholder="End Date" />
     <input type="text" asp-for="NewEvent.EventType" placeholder="Event Type" />
-    <button type="submit">Request Approval</button>
-
+    <input type="text" asp-for="NewEvent.Description" placeholder="Description" />
+    <button type="submit">Go to Event Approval</button>
 </form>
+
+
+    

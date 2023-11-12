@@ -4,6 +4,7 @@ using System.ComponentModel;
 using Capstone.Pages.Data_Classes;
 using Capstone.Pages.DB;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace Capstone.Pages.Events
 {
@@ -14,15 +15,18 @@ namespace Capstone.Pages.Events
 
         public void OnGet()
         {
+            NewEvent = new Event(); 
         }
+
 
         public void OnPost()
         {
-            TempData["EventData"] = NewEvent;
-            RedirectToPage("/EventApproval");
-            
-        }
+            DBClass.InsertRequestedEvent(NewEvent);
 
-        
+
+            //string eventJson = JsonConvert.SerializeObject(NewEvent);
+            //TempData["EventData"] = eventJson;
+            //RedirectToPage("./EventApproval");
+        }
     }
 }
