@@ -1,0 +1,20 @@
+﻿@page
+@model Capstone.Pages.Events.AddEventModel
+@{
+}
+
+<form>
+    <h1>Enter Event Information and Request Approval</h1>
+
+</form>
+
+<form asp-page="AddEvent">
+    <input type="text" asp-for="NewEvent.EventName" placeholder="Event Name" />
+    <input type="text" asp-for="NewEvent.RegistrationCost" placeholder="Registration Cost" />
+    <input type="text" asp-for="NewEvent.EstimatedAttendance" placeholder="Estimated Attendance" />
+    <input type="text" asp-for="NewEvent.StartDate" placeholder="Start Date" />
+    <input type="text" asp-for="NewEvent.EndDate" placeholder="End Date" />
+    <input type="text" asp-for="NewEvent.EventType" placeholder="Event Type" />
+    <button type="submit">Request Approval</button>
+
+</form>
