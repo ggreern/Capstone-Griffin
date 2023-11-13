@@ -12,7 +12,7 @@ namespace Capstone.Pages.DB
         public static SqlConnection CapDBConn = new SqlConnection();
         public static readonly String CapDBConnString = "Server = Localhost;Database = Cap;Trusted_Connection = True;TrustServerCertificate=true;";
         private static readonly String? AuthConnString = "Server=Localhost;Database=AUTH;Trusted_Connection=True;TrustServerCertificate=True";
-        public void InsertEvent(Event eventModel)
+        public static void InsertEvent(Event eventModel)
         {
             var connection = new SqlConnection(CapDBConnString);
             var command = connection.CreateCommand();
@@ -84,46 +84,52 @@ namespace Capstone.Pages.DB
         public static void CreateHashedUser(string Username, string Password)
         {
             string loginQuery = "Insert into HashedCredentials (Username, Password) values (@Username, @Password)";
-            SqlCommand cmdLogin = new SqlCommand();
-            cmdLogin.Connection = CapDBConn;
-            cmdLogin.Connection.ConnectionString = AuthConnString;
 
-            cmdLogin.CommandText = loginQuery;
-            cmdLogin.Parameters.AddWithValue("@Username", Username);
-            cmdLogin.Parameters.AddWithValue("@Password", PasswordHash.HashPassword(Password));
+            using (SqlConnection connection = new SqlConnection(AuthConnString))
+            {
+                using (SqlCommand cmdLogin = new SqlCommand(loginQuery, connection))
+                {
+                    cmdLogin.Parameters.AddWithValue("@Username", Username);
+                    cmdLogin.Parameters.AddWithValue("@Password", PasswordHash.HashPassword(Password));
 
-            cmdLogin.Connection.Open();
+                    connection.Open();
 
-            cmdLogin.ExecuteNonQuery();
+                    cmdLogin.ExecuteNonQuery();
+                }
+            }
         }
+
 
         public static bool HashedParameterLogin(string Username, string Password)
         {
             string loginQuery = "SELECT * from HashedCredentials Where Username = @Username";
 
-            SqlCommand cmdLogin = new SqlCommand();
-            cmdLogin.Connection = CapDBConn;
-            cmdLogin.Connection.ConnectionString = AuthConnString;
-
-            cmdLogin.CommandText = loginQuery;
-            cmdLogin.Parameters.AddWithValue("@Username", Username);
-
-            cmdLogin.Connection.Open();
-
-            SqlDataReader hashReader = cmdLogin.ExecuteReader();
-
-            if (hashReader.Read())
+            using (SqlConnection connection = new SqlConnection(AuthConnString))
             {
-                string correctHash = hashReader["Password"].ToString();
-
-                if (PasswordHash.ValidatePassword(Password, correctHash))
+                using (SqlCommand cmdLogin = new SqlCommand(loginQuery, connection))
                 {
+                    cmdLogin.Parameters.AddWithValue("@Username", Username);
 
-                    return true;
+                    connection.Open();
+
+                    using (SqlDataReader hashReader = cmdLogin.ExecuteReader())
+                    {
+                        if (hashReader.Read())
+                        {
+                            string correctHash = hashReader["Password"].ToString();
+
+                            if (PasswordHash.ValidatePassword(Password, correctHash))
+                            {
+                                return true;
+                            }
+                        }
+                    }
                 }
             }
+
             return false;
         }
+
 
         public static bool StoredProcedureLogin(string Username, string Password)
         {
@@ -211,5 +217,34 @@ namespace Capstone.Pages.DB
             return x;
         }
 
+
+        public static Event GetRequestedEventDetails(string EventName)
+        {
+            var connection = new SqlConnection(CapDBConnString);
+            var command = connection.CreateCommand();
+            command.CommandText = @"SELECT * FROM RequestedEvent WHERE Name = @EventName";
+            command.Parameters.AddWithValue("@EventName", EventName);
+
+            connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+            Event eventDetails = null;
+            if (reader.Read())
+            {
+                eventDetails = new Event
+                {
+
+                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                    Description = reader.GetString(reader.GetOrdinal("Description")),
+                    Address = reader.GetString(reader.GetOrdinal("Address")),
+                    StartDate = reader.GetDateTime(reader.GetOrdinal("StartDate")).ToString(),
+                    EndDate = reader.GetDateTime(reader.GetOrdinal("EndDate")).ToString(),
+                    RegistrationCost = (int)reader.GetDecimal(reader.GetOrdinal("RegistrationCost")),
+                    EventType = reader.GetString(reader.GetOrdinal("EventType")),
+                    EstimatedAttendance = reader.GetInt32(reader.GetOrdinal("EstimatedAttendance")),
+                };
+            }
+            connection.Close();
+            return eventDetails;
+        }
     }
 }

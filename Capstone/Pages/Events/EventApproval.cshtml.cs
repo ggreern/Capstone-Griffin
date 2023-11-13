@@ -25,6 +25,7 @@ namespace Capstone.Pages.Events
             {
                 RequestedEvents.Add(new Event
                 {
+
                     Name = getEvents["Name"].ToString(),
                     Address = getEvents["Address"].ToString(),
                     StartDate = getEvents["StartDate"].ToString(),
@@ -34,7 +35,7 @@ namespace Capstone.Pages.Events
 
 
                     RegistrationCost = (int)Convert.ToDecimal(getEvents["RegistrationCost"]),
-                    EstimatedAttendance = (int)Convert.ToDecimal(getEvents["RegistrationCost"])
+                    EstimatedAttendance = (int)Convert.ToDecimal(getEvents["EstimatedAttendance"])
                     //Not Working
 
 
@@ -47,17 +48,22 @@ namespace Capstone.Pages.Events
 
 
 
-
-
-
         }
 
-        public IActionResult OnPostApprove(int EventID)
+        public IActionResult OnPostApprove(string EventName)
         {
+            Event approvedEvent = DBClass.GetRequestedEventDetails(EventName);
+            if (approvedEvent != null)
+            {
+
+                DBClass.InsertEvent(approvedEvent);
+                return RedirectToPage("/Events/Index");
+            }
 
 
             return RedirectToPage("/Events/Index");
         }
+
 
         public IActionResult OnPostDeny()
         {

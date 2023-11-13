@@ -12,8 +12,23 @@ namespace Capstone.Pages
         public string ProfilePageUrl { get; } = "/Profile";
         public string SettingsPageUrl { get; } = "/Settings";
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (HttpContext.Session.GetString("username") == null)
+            {
+                return RedirectToPage("/DBLogin");
+            }
+            else
+            {
+                return Page();
+            }
+        }
+
+
+        public IActionResult OnPostLogoutHandler()
+        {
+            HttpContext.Session.Clear();
+            return Page();
         }
     }
 }

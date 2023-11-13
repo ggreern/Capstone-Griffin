@@ -1,6 +1,6 @@
-using Capstone.Pages.DB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Capstone.Pages.DB;
 
 namespace Capstone.Pages
 {
@@ -12,25 +12,22 @@ namespace Capstone.Pages
         [BindProperty]
         public string Password { get; set; }
 
-        public void OnGet()
-        {
-        }
-
         public IActionResult OnPost()
         {
-            // Assuming DBClass.HashedParameterLogin and DBClass.StoredProcedureLogin are boolean functions
-            if (DBClass.HashedParameterLogin(Username, Password) && DBClass.StoredProcedureLogin(Username, Password))
+            if (DBClass.HashedParameterLogin(Username, Password))
             {
                 HttpContext.Session.SetString("username", Username);
-
-                // Redirect to the "Menu" page
+                ViewData["LoginMessage"] = "Login Successful!";
                 DBClass.CapDBConn.Close();
-                return RedirectToPage("/Menu");
+                return RedirectToPage("Menu");
+            }
+            else
+            {
+                ViewData["LoginMessage"] = "Username and/or Password Incorrect";
+                DBClass.CapDBConn.Close();
+                return Page();
             }
 
-            ViewData["LoginMessage"] = "Username and/or Password is Incorrect";
-            DBClass.CapDBConn.Close();
-            return Page();
         }
 
         public IActionResult OnPostLogoutHandler()

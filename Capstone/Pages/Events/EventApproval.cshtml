@@ -43,10 +43,10 @@
                     <td>@requestedEvent.RegistrationCost</td>
                     <td>@requestedEvent.EstimatedAttendance</td>
                     <td>
-                        <form method="post" asp-page-handler="Approve" asp-route-EventID="@requestedEvent.EventID">
+                        <form method="post" asp-page-handler="Approve" asp-route-EventName="@requestedEvent.Name">
                             <button type="submit" class="btn btn-success">Approve</button>
                         </form>
-                        <form method="post" asp-page-handler="Deny" asp-route-EvnetID="@requestedEvent.EventID">
+                        <form method="post" asp-page-handler="Deny" asp-route-EventID="@requestedEvent.EventID">
                             <button type="submit" class="btn btn-danger">Deny</button>
                         </form>
                     </td>
