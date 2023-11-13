@@ -26,13 +26,26 @@
 
         <div class="form-group">
             <label for="HostID">Host</label>
-            <input asp-for="Subevent.HostID" type="number" class="form-control" id="HostID" name="HostID" placeholder="Enter Host Name">
+            <input asp-for="Subevent.HostID" type="text" class="form-control" id="HostID" name="HostID" placeholder="Enter Host Name">
         </div>
         
 
 
 
         <button type="submit" class="btn btn-primary">Submit</button>
- </form>
-    <input type="submit" value="Add Subevent" />
+    <button type="button" class="btn btn-secondary" onclick="populateForm()">Populate</button>
 
+
+
+ </form>
+
+
+<script>
+    function populateForm() {
+        document.getElementById("Name").value = "Python Workshop";
+        document.getElementById("Description").value = "Come enhance your Python Skills!";
+        document.getElementById("SubEventType").value = "Workshop";
+        document.getElementById("EstimatedAttendance").value = 50;
+        document.getElementById("HostID").value = "John Doe";
+    }
+</script>

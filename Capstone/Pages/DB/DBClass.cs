@@ -302,6 +302,39 @@ namespace Capstone.Pages.DB
             return tempReader;
         }
 
+        public static int GetUserIDByName(string userName)
+        {
+            int userID = 0;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(CapDBConnString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SELECT UserID FROM [User] WHERE CONCAT(FirstName, ' ', LastName) = @UserName", connection))
+                    {
+                        command.Parameters.AddWithValue("@UserName", userName);
+
+                        object result = command.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            userID = Convert.ToInt32(result);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (log, throw, or handle as appropriate)
+                Console.WriteLine($"Error in GetUserIDByName: {ex.Message}");
+                // You might want to log or throw the exception, or handle it in a way that's suitable for your application.
+            }
+
+            return userID;
+        }
+
 
     }
 }

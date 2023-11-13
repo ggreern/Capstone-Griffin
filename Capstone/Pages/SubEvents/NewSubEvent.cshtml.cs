@@ -24,7 +24,7 @@ namespace Capstone.Pages.Subevents
 
         public IActionResult OnPost()
         {
-            string hostName = Request.Form("Host");
+            string hostName = Request.Form["HostID"];
 
             int hostID = DBClass.GetUserIDByName(hostName);
 

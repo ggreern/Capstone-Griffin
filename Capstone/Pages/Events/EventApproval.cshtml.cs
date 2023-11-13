@@ -57,11 +57,11 @@ namespace Capstone.Pages.Events
             {
 
                 DBClass.InsertEvent(approvedEvent);
-                return RedirectToPage("/Events/Index");
+                return RedirectToPage("/SubEvents/Index");
             }
 
 
-            return RedirectToPage("/Events/Index");
+            return RedirectToPage("/SubEvents/Index");
         }
 
 

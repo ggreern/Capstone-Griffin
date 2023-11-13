@@ -19,9 +19,11 @@ namespace Capstone.Pages.Events
         }
 
 
-        public void OnPost()
+        public IActionResult OnPost()
         {
             DBClass.InsertRequestedEvent(NewEvent);
+            return RedirectToPage("./EventApproval");
+
 
 
             //string eventJson = JsonConvert.SerializeObject(NewEvent);
