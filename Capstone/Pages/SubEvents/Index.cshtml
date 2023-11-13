@@ -5,7 +5,7 @@
 <h2>Add Subevent</h2>
 <form method="post">
     <label for="event">Select Event:</label>
-    <select asp-for="Event.Name" asp-items="Model.EventList">
+    <select asp-for="Event.EventID" asp-items="Model.EventList">
         <option value="">-- Select an Event --</option>
     </select>
     <button type="submit" class="btn btn-danger">Create SubEvents</button>

@@ -23,7 +23,7 @@ namespace Capstone.Pages.Subevents
 
         public IActionResult OnPost()
         {
-            HttpContext.Session.SetString("SelectedEvent", Event.Name);
+            HttpContext.Session.SetInt32("SelectedEvent", Event.EventID);
 
             if (!ModelState.IsValid)
             {
