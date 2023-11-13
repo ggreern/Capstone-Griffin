@@ -1,0 +1,13 @@
+﻿@page
+@model Capstone.Pages.Subevents.AddSubEventModel
+@{
+}
+<h2>Add Subevent</h2>
+<form method="post">
+    <label for="event">Select Event:</label>
+    <select asp-for="Event.Name" asp-items="Model.EventList">
+        <option value="">-- Select an Event --</option>
+    </select>
+
+</form>
+

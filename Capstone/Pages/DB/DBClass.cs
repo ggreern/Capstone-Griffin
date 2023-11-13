@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Capstone.Pages.DB
 {
@@ -246,5 +247,61 @@ namespace Capstone.Pages.DB
             connection.Close();
             return eventDetails;
         }
+
+        public static List<SelectListItem> GetAllEvents()
+        {
+            List<SelectListItem> events = new List<SelectListItem>();
+            using (var connection = new SqlConnection(CapDBConnString))
+            {
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT EventID, Name FROM Event";
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        events.Add(new SelectListItem
+                        {
+                            Value = reader["EventID"].ToString(),
+                            Text = reader["Name"].ToString()
+                        });
+                    }
+                }
+            }
+            return events;
+        }
+
+        public static void AddSubEvent(SubEvent subEvent)
+        {
+            using (var connection = new SqlConnection(CapDBConnString))
+            {
+                var command = connection.CreateCommand();
+                command.CommandText = "INSERT INTO SubEvent (/* columns */) VALUES (/* values */)";
+                command.Parameters.AddWithValue("@Name", subEvent.Name);
+                command.Parameters.AddWithValue("@Description", subEvent.Description);
+                command.Parameters.AddWithValue("@SubEventType", subEvent.SubEventType);
+                command.Parameters.AddWithValue("@EstimatedAttendance", subEvent.EstimatedAttendance);
+                command.Parameters.AddWithValue("@EventID", subEvent.EventID);
+                command.Parameters.AddWithValue("@HostID", subEvent.HostID);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static SqlDataReader GetEventID (string EventName)
+        {
+            SqlCommand cmdGetID = new SqlCommand();
+            cmdGetID.Connection = CapDBConn;
+            cmdGetID.Connection.ConnectionString = CapDBConnString;
+            cmdGetID.CommandText = "Select EventID FROM Event Where Name == @EventName";
+
+            cmdGetID.Connection.Open();
+            SqlDataReader tempReader = cmdGetID.ExecuteReader();
+            return tempReader;
+        }
+
+
     }
 }
