@@ -1,31 +1,69 @@
 ﻿@page
 @model Capstone.Pages.Events.EventApprovalModel
 @{
+    ViewData["Title"] = "Event Approval";
 }
 
-<form method="get">
-    <h1>Event Approval</h1>
 
-    <div>
-        <label>Event Name:</label>
-        <span> @Model.NewEvent.Name</span>
-        <label>Description:</label>
-        <span>@Model.NewEvent.Description</span>
-        <label>Address:</label>
-        <span>@Model.NewEvent.Address</span>
-        <label>Start Date:</label>
-        <span>@Model.NewEvent.StartDate</span>
-        <label>End Date:</label>
-        <span>@Model.NewEvent.EndDate</span>
-        <label>Estimated Attendance:</label>
-        <span>@Model.NewEvent.EstimatedAttendance</span>
-        <label>Event Type:</label>
-        <span>@Model.NewEvent.EventType</span>
-        <label>Registration Cost:</label>
-        <span>@Model.NewEvent.RegistrationCost</span>
-    </div>
-    
+<h2>Event Approval</h2>
 
-    <button type="submit" asp-page-handler="OnPostApprove" class="btn btn-success">Approve</button>
-    <button type="submit" asp-page-handler="OnPostReject" class="btn btn-danger">Reject</button>
-</form>
+@if (Model.RequestedEvents.Count > 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Address</th>
+                <th>Start Date</th>
+                <th>End Date</th
+                <th>Event Type</th>
+                <th>Description</th>
+                <th>Registration Cost</th>
+                <th>Estimated Attendance</th>
+                @* <th>Description</th>
+                <th>Address</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Registration Cost</th>
+                <th>Event Type</th> *@
+
+               
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var requestedEvent in Model.RequestedEvents)
+            {
+                <tr>
+                    <td>@requestedEvent.Name</td>
+                    <td>@requestedEvent.Address</td>
+                    <td>@requestedEvent.StartDate</td>
+                    <td>@requestedEvent.EndDate</td>
+                    <td>@requestedEvent.EventType</td>
+                    <td>@requestedEvent.Description</td>
+                    <td>@requestedEvent.RegistrationCost</td>
+                    <td>@requestedEvent.EstimatedAttendance</td>
+                    <td>
+                        <form method="post" asp-page-handler="Approve" asp-route-EventID="@requestedEvent.EventID">
+                            <button type="submit" class="btn btn-success">Approve</button>
+                        </form>
+                        <form method="post" asp-page-handler="Deny" asp-route-EvnetID="@requestedEvent.EventID">
+                            <button type="submit" class="btn btn-danger">Deny</button>
+                        </form>
+                    </td>
+
+                    @* <td>@requestedEvent.Description</td>
+                    <td>@requestedEvent.StartDate</td>
+                    <td>@requestedEvent.EndDate</td>
+                    <td>@requestedEvent.RegistrationCost</td>
+                    <td>@requestedEvent.EventType</td> *@
+
+                    <!-- Add other table cells for additional properties -->
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No events requested.</p>
+}

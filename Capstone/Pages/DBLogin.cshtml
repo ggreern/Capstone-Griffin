@@ -1,0 +1,55 @@
+﻿@page
+@model Capstone.Pages.DBLoginModel
+@{
+}
+<h2> Log in!</h2>
+@{
+    if (ViewData["LoginMessage"] != null)
+    {
+        <p class="text-success">@ViewData["LoginMessage"]</p>
+
+    }
+}
+
+@{
+    if (HttpContext.Session.GetString("username") != null)
+    {
+        <p>@HttpContext.Session.GetString("username") logged in</p>
+
+        //log out
+        <form asp-page="DBLogin" asp-page-handler="LogoutHandler">
+            <input type="submit" class="btn btn-danger" value="logout">
+        </form>
+    }
+
+    else if (HttpContext.Session.GetString("LoginError") != null)
+    {
+        <p class="text-danger">@HttpContext.Session.GetString("LoginError")</p>
+
+        //try login again
+        <form asp-page="DBLogin">
+            <input asp-for="Username" class="form-control" placeholder="Enter Username" />
+            <br />
+            <input asp-for="Password" class="form-control" type="password" placeholder="Enter Password" />
+            <br />
+            <input type="submit" class="btn btn-primary" />
+
+        </form>
+    }
+
+    else
+    {
+        //first time loading
+
+        <form asp-page="DBlogin">
+            <input asp-for="Username" class="form-control" placeholder="Enter Username" />
+            <br />
+            <input asp-for="Password" class="form-control" type="password" placeholder="Enter Password" />
+            <br />
+            <input type="submit" value="Login" class="btn btn-primary" />
+            <br />
+            <br />
+        </form>
+        <a asp-page="/SignUp"> Haven't created an account? Register Here.</a>
+    }
+}

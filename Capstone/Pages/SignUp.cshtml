@@ -1,0 +1,28 @@
+﻿@page
+@model Capstone.Pages.SignUpModel
+@{
+}
+
+<form method="post">
+    <h1>Add User</h1>
+    <label>First Name:</label>
+    <input type="text" asp-for="NewUser.FirstName" required />
+    <br />
+    <label>Last Name:</label>
+    <input type="text" asp-for="NewUser.LastName" required />
+    <br />
+    <label>Email:</label>
+    <input type="email" asp-for="NewUser.Email" required />
+    <br />
+    <label>Phone Number:</label>
+    <input type="text" asp-for="NewUser.PhoneNumber" required />
+    <br />
+    <label>Username:</label>
+    <input type="text" asp-for="NewUser.Username" required />
+    <br />
+    <button type="submit">Add User</button>
+</form>
+
+
+
+
