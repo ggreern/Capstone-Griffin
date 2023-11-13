@@ -16,14 +16,16 @@ namespace Capstone.Pages.Subevents
 
         public void OnGet()
         {
-          
+            string selectedEvent = HttpContext.Session.GetString("SelectedEvent");
+            SqlDataReader c = DBClass.GetEventID(selectedEvent);
         }
-    }
 
-    public IActionResult OnPost()
-    {
-        string selectedEvent = HttpContext.Session.GetString("SelectedEvent");
-        SqlDataReader c = DBClass.GetEventID(selectedEvent);
-        //Get EventID where EventName is equal to SelectedEvent
+
+        public IActionResult OnPost()
+        {
+           
+            return Page();
+        }
+
     }
 }

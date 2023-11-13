@@ -277,7 +277,7 @@ namespace Capstone.Pages.DB
             using (var connection = new SqlConnection(CapDBConnString))
             {
                 var command = connection.CreateCommand();
-                command.CommandText = "INSERT INTO SubEvent (/* columns */) VALUES (/* values */)";
+                command.CommandText = "INSERT INTO SubEvent (Name, Description, SubEventType, EstimatedAttendance, EventID, HostID) VALUES (@Name, @Description, @SubEventType, @EstimatedAttendance, @EventID, @HostID)";
                 command.Parameters.AddWithValue("@Name", subEvent.Name);
                 command.Parameters.AddWithValue("@Description", subEvent.Description);
                 command.Parameters.AddWithValue("@SubEventType", subEvent.SubEventType);
@@ -295,8 +295,8 @@ namespace Capstone.Pages.DB
             SqlCommand cmdGetID = new SqlCommand();
             cmdGetID.Connection = CapDBConn;
             cmdGetID.Connection.ConnectionString = CapDBConnString;
-            cmdGetID.CommandText = "Select EventID FROM Event Where Name == @EventName";
-
+            cmdGetID.CommandText = "Select EventID FROM Event Where Name = @EventName";
+            cmdGetID.Parameters.AddWithValue("@EventName", EventName);
             cmdGetID.Connection.Open();
             SqlDataReader tempReader = cmdGetID.ExecuteReader();
             return tempReader;

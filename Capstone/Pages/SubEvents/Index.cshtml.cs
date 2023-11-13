@@ -28,9 +28,8 @@ namespace Capstone.Pages.Subevents
             if (!ModelState.IsValid)
             {
                 return Page();
-            }
-            DBClass.AddSubEvent(SubEvent); 
-            return RedirectToPage("./Index");
+            } 
+            return RedirectToPage("./NewSubEvent");
         }
 
     }
