@@ -4,27 +4,39 @@
 }
 
 <form method="post">
-    <h1>Add User</h1>
+    <h1>Register Here!</h1>
     <label>First Name:</label>
-    <input type="text" asp-for="NewUser.FirstName" required />
+    <input type="text" asp-for="NewUser.FirstName" required id="FirstName" />
     <br />
     <label>Last Name:</label>
-    <input type="text" asp-for="NewUser.LastName" required />
+    <input type="text" asp-for="NewUser.LastName" required id="LastName" />
     <br />
     <label>Email:</label>
-    <input type="email" asp-for="NewUser.Email" required />
+    <input type="email" asp-for="NewUser.Email" required id="Email" />
     <br />
     <label>Phone Number:</label>
-    <input type="text" asp-for="NewUser.PhoneNumber" required />
+    <input type="text" asp-for="NewUser.PhoneNumber" required id="PhoneNumber" />
     <br />
     <label>Username:</label>
-    <input type="text" asp-for="NewUser.Username" required />
+    <input type="text" asp-for="NewUser.Username" required id="Username" />
     <br />
     <label>Password:</label>
-    <input type="password" asp-for="Password" required />
+    <input type="password" asp-for="Password" required id="Password" />
     <br />
     <button type="submit">Add User</button>
+    <button type="button" class="btn btn-secondary" onclick="populateForm()">Populate</button>
 </form>
+
+<script>
+    function populateForm() {
+        document.getElementById("FirstName").value = "Test";
+        document.getElementById("LastName").value = "Organizer";
+        document.getElementById("Email").value = "Test@Gmail.com";
+        document.getElementById("PhoneNumber").value = "555-555-5555";
+        document.getElementById("Username").value = "TestUser";
+        document.getElementById("Password").value = "password";
+    }
+</script>
 
 
 

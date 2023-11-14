@@ -51,5 +51,14 @@
             <br />
         </form>
         <a asp-page="/SignUp"> Haven't created an account? Register Here.</a>
+        <button type="button" class="btn btn-secondary" onclick="populateForm()">Populate</button>
     }
 }
+
+<script>
+    function populateForm() {
+        // Set predefined values for the fields
+        document.querySelector('input[name="Username"]').value = "TestUser";
+        document.querySelector('input[name="Password"]').value = "password";
+    }
+</script>
