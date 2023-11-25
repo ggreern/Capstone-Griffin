@@ -29,6 +29,8 @@ namespace Capstone.Pages.DB
             command.Parameters.AddWithValue("@RegistrationCost", eventModel.RegistrationCost);
             command.Parameters.AddWithValue("@EventType", eventModel.EventType);
             command.Parameters.AddWithValue("@EstimatedAttendance", eventModel.EstimatedAttendance);
+            command.Parameters.AddWithValue("@OrganizerID", eventModel.OrganizerID);
+
 
             connection.Open();
             command.ExecuteNonQuery();
@@ -44,8 +46,8 @@ namespace Capstone.Pages.DB
             var connection = new SqlConnection(CapDBConnString);
             var command = connection.CreateCommand();
 
-            command.CommandText = @"INSERT INTO RequestedEvent (Name, Description, Address, StartDate, EndDate, RegistrationCost, EventType, EstimatedAttendance) 
-                                VALUES (@Name, @Description, @Address, @StartDate, @EndDate, @RegistrationCost, @EventType, @EstimatedAttendance)";
+            command.CommandText = @"INSERT INTO RequestedEvent (Name, Description, Address, StartDate, EndDate, RegistrationCost, EventType, EstimatedAttendance, OrganizerID) 
+                                VALUES (@Name, @Description, @Address, @StartDate, @EndDate, @RegistrationCost, @EventType, @EstimatedAttendance, @OrganizerID)";
 
             command.Parameters.AddWithValue("@Name", eventModel.Name);
             command.Parameters.AddWithValue("@Description", eventModel.Description);
@@ -55,6 +57,7 @@ namespace Capstone.Pages.DB
             command.Parameters.AddWithValue("@RegistrationCost", eventModel.RegistrationCost);
             command.Parameters.AddWithValue("@EventType", eventModel.EventType);
             command.Parameters.AddWithValue("@EstimatedAttendance", eventModel.EstimatedAttendance);
+            command.Parameters.AddWithValue("@OrganizerID", eventModel.OrganizerID);
 
             connection.Open();
             command.ExecuteNonQuery();
@@ -312,7 +315,7 @@ namespace Capstone.Pages.DB
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("SELECT UserID FROM [User] WHERE CONCAT(FirstName, ' ', LastName) = @UserName", connection))
+                    using (SqlCommand command = new SqlCommand("SELECT UserID FROM [User] WHERE userName = @UserName", connection))
                     {
                         command.Parameters.AddWithValue("@UserName", userName);
 
@@ -333,6 +336,55 @@ namespace Capstone.Pages.DB
             }
 
             return userID;
+        }
+
+
+
+        public static string GetUserTypeFromSession(HttpContext httpContext)
+        {
+            // Check if the username is in the session
+            string username = httpContext.Session.GetString("username");
+
+            if (username != null)
+            {
+                // Use your existing method to get the UserType from the database
+                string userType = GetUserTypeByName(username);
+
+                return userType;
+            }
+
+            return null; // or some default value depending on your requirements
+        }
+
+        public static string GetUserTypeByName(string username)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(CapDBConnString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SELECT UserType FROM [User] WHERE Username = @Username", connection))
+                    {
+                        command.Parameters.AddWithValue("@Username", username);
+
+                        object result = command.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            return result.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (log, throw, or handle as appropriate)
+                Console.WriteLine($"Error in GetUserTypeByName: {ex.Message}");
+                // You might want to log or throw the exception, or handle it in a way that's suitable for your application.
+            }
+
+            return null; // or some default value depending on your requirements
         }
 
 
