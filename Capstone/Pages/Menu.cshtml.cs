@@ -11,9 +11,17 @@ namespace Capstone.Pages
         public string MySchedulePageUrl { get; } = "/MySchedule";
         public string ProfilePageUrl { get; } = "/Profile";
         public string SettingsPageUrl { get; } = "/Settings";
+        public string SendEmailPageUrl { get; } = "/Events/SendEmail";
 
         public IActionResult OnGet()
         {
+            // Get the UserID from the session
+            int organizerID = HttpContext.Session.GetInt32("userID").Value;
+
+            ViewData["OrganizerID"] = organizerID;
+            
+
+
             if (HttpContext.Session.GetString("username") == null)
             {
                 return RedirectToPage("/DBLogin");
@@ -22,6 +30,8 @@ namespace Capstone.Pages
             {
                 return Page();
             }
+            
+         
         }
 
 

@@ -32,6 +32,7 @@ namespace Capstone.Pages.Events
                     EndDate = getEvents["EndDate"].ToString(),
                     EventType = getEvents["EventType"].ToString(),
                     Description = getEvents["Description"].ToString(),
+                    OrganizerID = (int)getEvents["OrganizerID"],
 
 
                     RegistrationCost = (int)Convert.ToDecimal(getEvents["RegistrationCost"]),

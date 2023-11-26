@@ -9,11 +9,15 @@ namespace Capstone.Pages.Events
 {
     public class AddEventModel : PageModel
     {
+        private int organizerID;
+
         [BindProperty]
         public Event NewEvent { get; set; }
 
         public IActionResult OnGet()
         {
+            int organizerID = HttpContext.Session.GetInt32("userID").Value;
+            ViewData["OrganizerID"] = organizerID;
             NewEvent = new Event();
             return Page();
         }
@@ -21,7 +25,7 @@ namespace Capstone.Pages.Events
         public IActionResult OnPost()
         {
             // Get the UserID from the session
-            int organizerID = HttpContext.Session.GetInt32("userID").Value;
+            
 
             // Assign the OrganizerID to the OrganizerID property of the new event
             NewEvent.OrganizerID = organizerID;

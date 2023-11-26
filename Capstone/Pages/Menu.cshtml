@@ -2,6 +2,7 @@
 @model MenuModel
 @{
     ViewData["Title"] = "Home Page";
+    <p>User ID: @ViewData["OrganizerID"]</p>
 }
 
 <link href="~/css/custom.css" rel="stylesheet" />
@@ -41,6 +42,13 @@
                         <a class="nav-link" href="/Profile/Index">Profile</a>
                             <span data-feather="bar-chart-2"></span>
                          
+                        </a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Events/SendEmail">Send Email</a>
+                        <span data-feather="bar-chart-2"></span>
+
                         </a>
                     </li>
                     <li class="nav-item">

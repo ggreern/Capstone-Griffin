@@ -6,7 +6,7 @@
 <form>
     <h1>Enter Event Information and Request Approval</h1>
     <!-- Display UserID -->
-    <p>User ID: @Model.NewEvent.OrganizerID</p>
+    <p>User ID: @ViewData["OrganizerID"]</p>
 </form>
 
 <form asp-page="AddEvent">

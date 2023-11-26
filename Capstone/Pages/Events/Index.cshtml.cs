@@ -7,6 +7,7 @@ namespace Capstone.Pages.Events
     {
         public void OnGet()
         {
+           
         }
 
         public IActionResult OnPost()
