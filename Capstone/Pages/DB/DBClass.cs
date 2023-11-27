@@ -387,6 +387,86 @@ namespace Capstone.Pages.DB
             return null; // or some default value depending on your requirements
         }
 
+        public static List<SelectListItem> GetAllEventsList()
+        {
+            List<SelectListItem> events = new List<SelectListItem>();
+            using (var connection = new SqlConnection(CapDBConnString))
+            {
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT EventID, Name FROM Event";
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        events.Add(new SelectListItem
+                        {
+                            Value = reader["EventID"].ToString(),
+                            Text = reader["Name"].ToString()
+                        });
+                    }
+                }
+            }
+            return events;
+        }
+
+
+        public static List<User> GetUsersForSelectedEvents(List<int> selectedEventIds)
+        {
+            List<User> users = new List<User>();
+
+            // Check if there are selected event IDs
+            if (selectedEventIds != null && selectedEventIds.Count > 0)
+            {
+                // Use a parameterized query to fetch users for the selected events
+                string query = "SELECT * FROM [User] INNER JOIN EventRegistration ON [User].UserID = EventRegistration.UserID WHERE EventRegistration.EventID IN (@EventIds)";
+
+                using (SqlConnection connection = new SqlConnection(CapDBConnString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        // Use a table-valued parameter to pass the list of event IDs
+                        var table = new DataTable();
+                        table.Columns.Add("EventId", typeof(int));
+                        foreach (var eventId in selectedEventIds)
+                        {
+                            table.Rows.Add(eventId);
+                        }
+
+                        SqlParameter param = command.Parameters.AddWithValue("@EventIds", table);
+                        param.SqlDbType = System.Data.SqlDbType.Structured;
+                        param.TypeName = "dbo.IntList"; // Assuming you have a user-defined table type named IntList
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                User user = new User
+                                {
+                                    // Map the user properties from the reader
+                                    UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
+                                    FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                    LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                                    Email = reader.GetString(reader.GetOrdinal("Email")),
+                                    PhoneNumber = reader.GetString(reader.GetOrdinal("PhoneNumber")),
+                                    Username = reader.GetString(reader.GetOrdinal("Username")),
+                                    UserType = reader.GetString(reader.GetOrdinal("UserType"))
+                                    
+                                };
+
+                                users.Add(user);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return users;
+        }
+
 
     }
 }

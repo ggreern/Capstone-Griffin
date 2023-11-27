@@ -9,10 +9,10 @@ namespace Capstone.Pages.Data_Classes
     {
         public static void SendEmail(EmailModel emailModel)
         {
-            string smtpServer = "smtp.gmail.com";
-            int smtpPort = 587;
-            string smtpUsername = "host.management.system@gmail.com";
-            string smtpPassword = "12Hands3!";
+            string smtpServer = "smtp.office365.com"; // Outlook SMTP server
+            int smtpPort = 587; // Outlook uses port 587
+            string smtpUsername = "host.management.system@outlook.com"; // Your Outlook email address
+            string smtpPassword = "12Hands3!"; // Your Outlook password or App Password
 
             using (SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort))
             {

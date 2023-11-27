@@ -1,6 +1,7 @@
 using Capstone.Pages.Data_Classes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Net.Mail;
 
 namespace Capstone.Pages.Events
 {
