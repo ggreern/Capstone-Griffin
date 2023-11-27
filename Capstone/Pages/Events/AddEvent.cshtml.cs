@@ -1,34 +1,63 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel;
-using Capstone.Pages.Data_Classes;
-using Capstone.Pages.DB;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
+using Capstone.Pages.DB;
+using Capstone.Pages.Data_Classes;
+using System;
 
 namespace Capstone.Pages.Events
 {
     public class AddEventModel : PageModel
     {
+        private int organizerID;
+
         [BindProperty]
         public Event NewEvent { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            NewEvent = new Event(); 
+            int organizerID = HttpContext.Session.GetInt32("userID").Value;
+            ViewData["OrganizerID"] = organizerID;
+            NewEvent = new Event();
+            return Page();
         }
-
 
         public IActionResult OnPost()
         {
-            DBClass.InsertRequestedEvent(NewEvent);
-            return RedirectToPage("./EventApproval");
+            // Get the UserID from the session
+            
 
+            // Assign the OrganizerID to the OrganizerID property of the new event
+            NewEvent.OrganizerID = organizerID;
 
+            // Get UserType directly from the database
+            string username = HttpContext.Session.GetString("username");
+            string userType = DBClass.GetUserTypeByName(username);
 
-            //string eventJson = JsonConvert.SerializeObject(NewEvent);
-            //TempData["EventData"] = eventJson;
-            //RedirectToPage("./EventApproval");
+            
+
+            // Redirect based on UserType
+            if (userType.Trim().Equals("Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                // Insert requested event
+                DBClass.InsertRequestedEvent(NewEvent);
+
+                // Redirect to EventApproval page for Admin
+                return RedirectToPage("./EventApproval");
+            }
+            else
+            {
+                // Insert requested event
+                DBClass.InsertRequestedEvent(NewEvent);
+
+                // Redirect to the current page for non-Admin users
+                return RedirectToPage("/SubEvents/Index");
+            }
         }
+
+
     }
 }
+
+
+

@@ -5,7 +5,8 @@
 
 <form>
     <h1>Enter Event Information and Request Approval</h1>
-
+    <!-- Display UserID -->
+    <p>User ID: @ViewData["OrganizerID"]</p>
 </form>
 
 <form asp-page="AddEvent">
@@ -17,13 +18,13 @@
     <input type="text" asp-for="NewEvent.EndDate" placeholder="End Date" />
     <input type="text" asp-for="NewEvent.EventType" placeholder="Event Type" />
     <input type="text" asp-for="NewEvent.Description" placeholder="Description" />
+
     <button type="submit">Go to Event Approval</button>
     <button type="button" onclick="populateForm()">Populate</button>
 </form>
 
 <script>
     function populateForm() {
-        
         var predefinedValues = {
             Name: "Sample Event",
             Address: "123 Main Street",
@@ -35,7 +36,6 @@
             Description: "This is a sample event."
         };
 
-        
         Object.keys(predefinedValues).forEach(function (key) {
             var inputField = document.querySelector('[name="NewEvent.' + key + '"]');
             if (inputField) {
@@ -44,5 +44,3 @@
         });
     }
 </script>
-
-    

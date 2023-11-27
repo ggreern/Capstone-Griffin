@@ -1,0 +1,22 @@
+﻿@page
+@model Capstone.Pages.Events.SendEmailModel
+@{
+    ViewData["Title"] = "Send Email";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    <label for="ToEmail">To Email:</label>
+    <input type="text" asp-for="EmailForm.ToEmail" required />
+
+    <label for="Subject">Subject:</label>
+    <input type="text" asp-for="EmailForm.Subject" required />
+
+    <label for="Body">Body:</label>
+    <textarea asp-for="EmailForm.Body" required></textarea>
+
+    <button type="submit">Send Email</button>
+</form>
+
+<p>@ViewData["Message"]</p>

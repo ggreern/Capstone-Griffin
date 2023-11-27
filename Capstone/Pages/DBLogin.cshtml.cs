@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http;
 using Capstone.Pages.DB;
 
 namespace Capstone.Pages
@@ -16,6 +17,12 @@ namespace Capstone.Pages
         {
             if (DBClass.HashedParameterLogin(Username, Password))
             {
+                // Get UserID by username
+                int userID = DBClass.GetUserIDByName(Username);
+
+                // Set UserID in session state
+                HttpContext.Session.SetInt32("userID", userID);
+
                 HttpContext.Session.SetString("username", Username);
                 ViewData["LoginMessage"] = "Login Successful!";
                 DBClass.CapDBConn.Close();
@@ -27,7 +34,6 @@ namespace Capstone.Pages
                 DBClass.CapDBConn.Close(); 
                 return Page();
             }
-
         }
 
         public IActionResult OnPostLogoutHandler()
@@ -37,3 +43,4 @@ namespace Capstone.Pages
         }
     }
 }
+

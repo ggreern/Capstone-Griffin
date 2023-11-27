@@ -11,7 +11,7 @@
         public int RegistrationCost { get; set; }
         public string? EventType { get; set; }
         public int EstimatedAttendance { get; set; }
-        public string? UserID { get; set; }
+        public int OrganizerID { get; set; }
 
 
 
