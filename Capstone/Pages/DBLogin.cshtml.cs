@@ -24,7 +24,7 @@ namespace Capstone.Pages
             else
             {
                 ViewData["LoginMessage"] = "Username and/or Password Incorrect";
-                DBClass.CapDBConn.Close();
+                DBClass.CapDBConn.Close(); 
                 return Page();
             }
 
