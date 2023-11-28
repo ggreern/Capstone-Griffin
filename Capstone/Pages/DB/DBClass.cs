@@ -13,13 +13,15 @@ namespace Capstone.Pages.DB
         public static SqlConnection CapDBConn = new SqlConnection();
         public static readonly String CapDBConnString = "Server = Localhost;Database = Cap;Trusted_Connection = True;TrustServerCertificate=true;";
         private static readonly String? AuthConnString = "Server=Localhost;Database=AUTH;Trusted_Connection=True;TrustServerCertificate=True";
+
+
         public static void InsertEvent(Event eventModel)
         {
             var connection = new SqlConnection(CapDBConnString);
             var command = connection.CreateCommand();
 
-            command.CommandText = @"INSERT INTO Event (Name, Description, Address, StartDate, EndDate, RegistrationCost) 
-                                VALUES (@Name, @Description, @Address, @StartDate, @EndDate, @RegistrationCost)";
+            command.CommandText = @"INSERT INTO Event (Name, Description, Address, StartDate, EndDate, RegistrationCost, OrganizerID) 
+                                VALUES (@Name, @Description, @Address, @StartDate, @EndDate, @RegistrationCost, @OrganizerID)";
 
             command.Parameters.AddWithValue("@Name", eventModel.Name);
             command.Parameters.AddWithValue("@Description", eventModel.Description);
@@ -242,6 +244,7 @@ namespace Capstone.Pages.DB
                     RegistrationCost = (int)reader.GetDecimal(reader.GetOrdinal("RegistrationCost")),
                     EventType = reader.GetString(reader.GetOrdinal("EventType")),
                     EstimatedAttendance = reader.GetInt32(reader.GetOrdinal("EstimatedAttendance")),
+                    OrganizerID = reader.GetInt32(reader.GetOrdinal("OrganizerID"))
                 };
             }
             connection.Close();

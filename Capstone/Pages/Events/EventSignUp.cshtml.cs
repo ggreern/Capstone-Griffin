@@ -8,6 +8,8 @@ namespace Capstone.Pages.Events
     {
         public EventDisplayModel EventModel { get; set; }
 
+
+
         public IActionResult OnGet()
         {
             // Retrieve events from the database
@@ -15,6 +17,7 @@ namespace Capstone.Pages.Events
             {
                 Events = DBClass.GetEventsList() 
             };
+      
 
             return Page();
         }
@@ -22,14 +25,17 @@ namespace Capstone.Pages.Events
         public IActionResult OnPostSignUp(int eventId)
         {
             // Get UserID from session state
-            int? userId = HttpContext.Session.GetInt32("userID");
+            int? userId = HttpContext.Session.GetInt32("userID").Value;
 
             if (userId.HasValue)
             {
-                // Add user to the EventRegistration table
-                DBClass.AddEventRegistration(userId.Value, eventId);
+                
 
-                ViewData["SignUpMessage"] = "Event sign-up successful!";
+                    // Add user to the EventRegistration table
+                    DBClass.AddEventRegistration(userId.Value, eventId);
+
+                    ViewData["SignUpMessage"] = "Event sign-up successful!";
+                
             }
             else
             {

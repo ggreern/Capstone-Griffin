@@ -47,7 +47,7 @@ namespace Capstone.Pages.Events
                         RegistrationCost = (int)Convert.ToDecimal(getEvents["RegistrationCost"]),
                         EstimatedAttendance = (int)Convert.ToDecimal(getEvents["EstimatedAttendance"]),
 
-                        //Not Working
+                        
 
 
                     });

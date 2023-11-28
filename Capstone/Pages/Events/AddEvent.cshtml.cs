@@ -29,7 +29,7 @@ namespace Capstone.Pages.Events
             
 
             // Assign the OrganizerID to the OrganizerID property of the new event
-            NewEvent.OrganizerID = organizerID;
+            NewEvent.OrganizerID = HttpContext.Session.GetInt32("userID").Value;
 
             // Get UserType directly from the database
             string username = HttpContext.Session.GetString("username");

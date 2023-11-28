@@ -5,6 +5,7 @@
 
 <h2>Event Sign-Up</h2>
 
+<form method="post" asp-page-handler="SignUp">
 <div>
     @if (Model.EventModel != null && Model.EventModel.Events != null)
     {
@@ -13,6 +14,11 @@
             <div>
                 <h4>@eventItem.Name</h4>
                 <p>@eventItem.Description</p>
+                <p>@eventItem.EventID</p>
+
+                    
+
+
                 <button type="button" onclick="location.href='@Url.Page("EventSignUp", "SignUp", new { eventId = eventItem.EventID })'">Sign Up</button>
 
             </div>
@@ -20,3 +26,6 @@
         }
     }
 </div>
+</form>
+
+
