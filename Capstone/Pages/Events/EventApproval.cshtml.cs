@@ -20,31 +20,42 @@ namespace Capstone.Pages.Events
         {
             RequestedEvents = new List<Event>();
             SqlDataReader getEvents = DBClass.GetRequestedEvents();
-
-            while (getEvents.Read())
-            {
-                RequestedEvents.Add(new Event
+          
+                while (getEvents.Read())
                 {
+                int organizerID = Convert.IsDBNull(getEvents["OrganizerID"]) ? 0 : (int)getEvents["OrganizerID"];
 
-                    Name = getEvents["Name"].ToString(),
-                    Address = getEvents["Address"].ToString(),
-                    StartDate = getEvents["StartDate"].ToString(),
-                    EndDate = getEvents["EndDate"].ToString(),
-                    EventType = getEvents["EventType"].ToString(),
-                    Description = getEvents["Description"].ToString(),
-                    OrganizerID = (int)getEvents["OrganizerID"],
-
-
-                    RegistrationCost = (int)Convert.ToDecimal(getEvents["RegistrationCost"]),
-                    EstimatedAttendance = (int)Convert.ToDecimal(getEvents["EstimatedAttendance"]),
-                    
-                    //Not Working
+                // Skip the current iteration if OrganizerID is null
+                if (organizerID == 0)
+                {
+                    continue;
+                }
 
 
-                });
+                RequestedEvents.Add(new Event
+                    {
+
+                        Name = getEvents["Name"].ToString(),
+                        Address = getEvents["Address"].ToString(),
+                        StartDate = getEvents["StartDate"].ToString(),
+                        EndDate = getEvents["EndDate"].ToString(),
+                        EventType = getEvents["EventType"].ToString(),
+                        Description = getEvents["Description"].ToString(),
+                        OrganizerID = (int)getEvents["OrganizerID"],
 
 
-            }
+                        RegistrationCost = (int)Convert.ToDecimal(getEvents["RegistrationCost"]),
+                        EstimatedAttendance = (int)Convert.ToDecimal(getEvents["EstimatedAttendance"]),
+
+                        //Not Working
+
+
+                    });
+
+
+                }
+
+            
 
             DBClass.CapDBConn.Close();
 

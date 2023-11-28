@@ -20,6 +20,8 @@
                 <th>Description</th>
                 <th>Registration Cost</th>
                 <th>Estimated Attendance</th>
+                <th>Organizer ID</th>
+
                 @* <th>Description</th>
                 <th>Address</th>
                 <th>Start Date</th>
@@ -42,6 +44,7 @@
                     <td>@requestedEvent.Description</td>
                     <td>@requestedEvent.RegistrationCost</td>
                     <td>@requestedEvent.EstimatedAttendance</td>
+                    <td>@requestedEvent.OrganizerID</td>
                     <td>
                         <form method="post" asp-page-handler="Approve" asp-route-EventName="@requestedEvent.Name">
                             <button type="submit" class="btn btn-success">Approve</button>
