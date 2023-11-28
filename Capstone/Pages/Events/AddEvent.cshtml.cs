@@ -9,7 +9,8 @@ namespace Capstone.Pages.Events
 {
     public class AddEventModel : PageModel
     {
-        private int organizerID;
+
+        public int organizerID;
 
         [BindProperty]
         public Event NewEvent { get; set; }
@@ -28,7 +29,7 @@ namespace Capstone.Pages.Events
             
 
             // Assign the OrganizerID to the OrganizerID property of the new event
-            NewEvent.OrganizerID = organizerID;
+            NewEvent.OrganizerID = HttpContext.Session.GetInt32("userID").Value;
 
             // Get UserType directly from the database
             string username = HttpContext.Session.GetString("username");
