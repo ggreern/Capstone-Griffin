@@ -12,6 +12,7 @@ namespace Capstone.Pages
         public string ProfilePageUrl { get; } = "/Profile";
         public string SettingsPageUrl { get; } = "/Settings";
         public string SendEmailPageUrl { get; } = "/Events/SendEmail";
+        public string EventSignUpUrl { get; } = "/Events/EventSignUp";
 
         public IActionResult OnGet()
         {

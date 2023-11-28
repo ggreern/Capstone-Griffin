@@ -188,23 +188,20 @@ namespace Capstone.Pages.DB
             {
                 connection.Open();
 
-                string sqlQuery = "INSERT INTO [User] (FirstName, LastName, Email, PhoneNumber, Username) VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @Username)";
+                string sqlQuery = "INSERT INTO [User] (FirstName, LastName, Email, PhoneNumber, Username, UserType) VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @Username, @UserType)";
 
                 using (SqlCommand cmdProductRead = new SqlCommand(sqlQuery, connection))
                 {
-                    ////cmdProductRead.Parameters.AddWithValue("@Username", x.Username);
                     cmdProductRead.Parameters.AddWithValue("@FirstName", x.FirstName);
                     cmdProductRead.Parameters.AddWithValue("@LastName", x.LastName);
                     cmdProductRead.Parameters.AddWithValue("@Email", x.Email);
                     cmdProductRead.Parameters.AddWithValue("@PhoneNumber", x.PhoneNumber);
                     cmdProductRead.Parameters.AddWithValue("@Username", x.Username);
-                    
-                    
+                    cmdProductRead.Parameters.AddWithValue("@UserType", "Attendee");
 
                     cmdProductRead.ExecuteNonQuery();
                 }
             }
-
         }
 
 
@@ -465,6 +462,59 @@ namespace Capstone.Pages.DB
             }
 
             return users;
+        }
+
+
+
+        public static List<Event> GetEventsList()
+        {
+            List<Event> events = new List<Event>();
+
+            using (SqlConnection connection = new SqlConnection(CapDBConnString))
+            {
+                connection.Open();
+
+                string sqlQuery = "SELECT EventID, Name, Description FROM Event";
+
+                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Event eventItem = new Event
+                            {
+                                EventID = reader.GetInt32(reader.GetOrdinal("EventID")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                Description = reader.GetString(reader.GetOrdinal("Description"))
+                            };
+
+                            events.Add(eventItem);
+                        }
+                    }
+                }
+            }
+
+            return events;
+        }
+
+
+        public static void AddEventRegistration(int userId, int eventId)
+        {
+            using (SqlConnection connection = new SqlConnection(CapDBConnString))
+            {
+                connection.Open();
+
+                string sqlQuery = "INSERT INTO EventRegistration (UserID, EventID) VALUES (@UserID, @EventID)";
+
+                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@UserID", userId);
+                    command.Parameters.AddWithValue("@EventID", eventId);
+
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
 

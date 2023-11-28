@@ -1,0 +1,22 @@
+﻿@page
+@model Capstone.Pages.Events.EventSignUpModel
+@{
+}
+
+<h2>Event Sign-Up</h2>
+
+<div>
+    @if (Model.EventModel != null && Model.EventModel.Events != null)
+    {
+        foreach (var eventItem in Model.EventModel.Events)
+        {
+            <div>
+                <h4>@eventItem.Name</h4>
+                <p>@eventItem.Description</p>
+                <button type="button" onclick="location.href='@Url.Page("EventSignUp", "SignUp", new { eventId = eventItem.EventID })'">Sign Up</button>
+
+            </div>
+            <hr />
+        }
+    }
+</div>
