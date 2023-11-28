@@ -17,7 +17,7 @@ namespace Capstone.Pages.Events
 
         public IActionResult OnGet()
         {
-            int organizerID = HttpContext.Session.GetInt32("userID").Value;
+            organizerID = HttpContext.Session.GetInt32("userID").Value;
             ViewData["OrganizerID"] = organizerID;
             NewEvent = new Event();
             return Page();
@@ -25,11 +25,11 @@ namespace Capstone.Pages.Events
 
         public IActionResult OnPost()
         {
-            // Get the UserID from the session
+            
             
 
             // Assign the OrganizerID to the OrganizerID property of the new event
-            NewEvent.OrganizerID = HttpContext.Session.GetInt32("userID").Value;
+            NewEvent.OrganizerID = organizerID;
 
             // Get UserType directly from the database
             string username = HttpContext.Session.GetString("username");
