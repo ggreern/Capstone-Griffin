@@ -1,18 +1,205 @@
-html {
-  font-size: 14px;
+body, html {
+    height: 100%;
+    margin: 0;
+    background-color: #F0F3F2;
+    font-family: 'Public Sans', sans-serif;
 }
 
-@media (min-width: 768px) {
-  html {
+main {
+    padding-top: 100px;
+    padding-left: 200px;
+    background-color: #F0F3F2;
+}
+
+
+.card {
+    margin-bottom: 1rem;
+    border: 0;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+}
+
+.card-body {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 100;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+}
+
+
+/* NAT- OVERALL SITE STYLING */
+
+h2 {
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 48px;
+    color: #26473C;
+}
+
+.stylefield {
+    padding-right: 4em;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    margin-bottom: 5px;
+    border: 1px, #648B7F;
+}
+
+#addSUBeventpage textarea {
+    padding-right: 4em;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    margin-bottom: 5px;
+    border: 1px, #648B7F;
+}
+
+.btnstyle {
+    color: white;
+    background-color: #648B7F;
+    padding: .5em 2em;
+    border: none;
+    margin-top: 10px;
+}
+
+
+
+/* NAT - LOGIN PAGE STYLING */
+
+#loginpage {
+    text-align: center;
+}
+
+.loginhf {
+    background-color: #26473C;
+    padding: 1em 0em;
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 200;
+}
+
+.loginhr h1 {
+    font-size: 32px;
+}
+
+.loginhf h5 {
+    font-size: 12px;
+}
+
+
+/*  NAT - STYLING ADD EVENTS PAGE*/
+
+#addeventpage, #addSUBeventpage, #subeventindex {
+    margin-left: 2em;
+}
+
+#addeventform {
+    margin-left: 3em;
+}
+
+/*start header styling*/
+
+nav {
+    display: flex;
+    align-items: center;
+    padding-top: 0;
+}
+
+    nav ul {
+        list-style-type: none;
+    }
+
+header {
+    width: 100%;
+    padding-top: 0;
+    background-color: #CFDDD8;
+    position: fixed;
+    z-index: 9999;
+}
+
+
+h1.logo {
+    margin: 0px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 1em;
+    background-color: #648B7F;
+    font-weight: 300;
+    letter-spacing: 5px;
+    width: 175px;
+}
+
+.rightbar {
+    margin-inline-start: auto;
+}
+
+    .rightbar li {
+        display: inline-block;
+        margin: 0 15px;
+        padding-top: 0px;
+    }
+
+.search {
+    margin-left: 3em;
+}
+
+
+/*sidebar styling*/
+
+.side-nav {
+    width: 175px;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    padding: 100px 15px;
+    background-color: #26473C;
+    color: white;
     font-size: 16px;
-  }
+    text-transform: uppercase;
+    z-index: 0;
+    float: left;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
+    .side-nav ul {
+        list-style-type: none;
+        padding-left: 1em;
+    }
 
-body {
-  margin-bottom: 60px;
-}
+    .side-nav li {
+        list-style-type: none;
+        padding-bottom: 30px;
+    }
+
+    /*sidebar links*/
+
+    .side-nav a:link, .side-nav a:visited {
+        color: white;
+        text-decoration: none;
+    }
+
+    .side-nav a:hover {
+        color: #CFDDD8;
+        text-decoration: none;
+    }
+
+    .side-nav a:active {
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+    }

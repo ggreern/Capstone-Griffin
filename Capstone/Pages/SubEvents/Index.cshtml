@@ -2,13 +2,24 @@
 @model Capstone.Pages.Subevents.AddSubEventModel
 @{
 }
-<h2>Add Subevent</h2>
-<form method="post">
-    <label for="event">Select Event:</label>
-    <select asp-for="Event.EventID" asp-items="Model.EventList">
-        <option value="">-- Select an Event --</option>
-    </select>
-    <button type="submit" class="btn btn-primary">Create SubEvents</button>
 
-</form>
+<link href="~/css/site.css" rel="stylesheet" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+<section id="subeventindex">
+    <h2>Add Subevent</h2>
+    <form method="post">
+        <label for="event">Select Event:</label>
+        <select class="stylefield" asp-for="Event.EventID" asp-items="Model.EventList">
+            <option value="">-- Select an Event --</option>
+        </select>
+
+        <button class="btnstyle" type="submit" class="btn btn-danger">Create SubEvents</button>
+
+    </form>
+</section>
+
 

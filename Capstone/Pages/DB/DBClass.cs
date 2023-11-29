@@ -11,8 +11,23 @@ namespace Capstone.Pages.DB
     public class DBClass
     {
         public static SqlConnection CapDBConn = new SqlConnection();
-        public static readonly String CapDBConnString = "Server = Localhost;Database = Cap;Trusted_Connection = True;TrustServerCertificate=true;";
-        private static readonly String? AuthConnString = "Server=Localhost;Database=AUTH;Trusted_Connection=True;TrustServerCertificate=True";
+        //AWS Connection String
+        private static readonly string CapDBConnString =
+            @"Server=capstone.chp6q2y6rmvw.us-east-2.rds.amazonaws.com;Database=Capstone;User Id=admin;Password=Capstone12#;Trusted_Connection = False;TrustServerCertificate=true;";
+
+        private static readonly string AuthConnString =
+            @"Server=capstone.chp6q2y6rmvw.us-east-2.rds.amazonaws.com;Database=AUTH;User Id=admin;Password=Capstone12#;Trusted_Connection=False;TrustServerCertificate=True";
+
+        /*private static readonly string CapDBConnString
+            = @"capstone.chp6q2y6rmvw.us-east-2.rds.amazonaws.com;
+                    Database=Capstone;uid=admin;password=Capstone12#";
+        private static readonly string AuthConnString
+           = @"capstone.chp6q2y6rmvw.us-east-2.rds.amazonaws.com;
+                    Database=AUTH;uid=admin;password=Capstone12#";*/
+
+        //Local Host Conn
+        //public static readonly String CapDBConnString = "Server = Localhost;Database = Cap;Trusted_Connection = True;TrustServerCertificate=true;";
+        //private static readonly String? AuthConnString = "Server=Localhost;Database=AUTH;Trusted_Connection=True;TrustServerCertificate=True";
 
 
         public static void InsertEvent(Event eventModel)
@@ -519,6 +534,100 @@ namespace Capstone.Pages.DB
                 }
             }
         }
+
+        public static List<SelectListItem> GetAllSubEvents()
+        {
+            List<SelectListItem> subEvents = new List<SelectListItem>();
+            using (var connection = new SqlConnection(CapDBConnString))
+            {
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT SubEventID, Name FROM SubEvent";
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        subEvents.Add(new SelectListItem
+                        {
+                            Value = reader["SubEventID"].ToString(),
+                            Text = reader["Name"].ToString()
+                        });
+                    }
+                }
+            }
+            return subEvents;
+        }
+
+
+        public static List<Room> GetSuggestedRooms(int estimatedAttendance)
+        {
+            List<Room> rooms = new List<Room>();
+            var connection = new SqlConnection(CapDBConnString);
+            var command = connection.CreateCommand();
+            command.CommandText = "SELECT RoomID, Name, Capacity FROM Room WHERE Capacity >= @EstimatedAttendance";
+            command.Parameters.AddWithValue("@EstimatedAttendance", estimatedAttendance);
+
+            connection.Open();
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                rooms.Add(new Room
+                {
+                    RoomID = reader.GetInt32(reader.GetOrdinal("RoomID")),
+                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                    Capacity = reader.GetInt32(reader.GetOrdinal("Capacity"))
+                });
+            }
+            connection.Close();
+            return rooms;
+        }
+
+        public static int GetEstimatedAttendanceForSubEvent(int subEventId)
+        {
+            int estimatedAttendance = 0;
+            using (var connection = new SqlConnection(CapDBConnString))
+            {
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT EstimatedAttendance FROM SubEvent WHERE SubEventID = @SubEventID";
+                command.Parameters.AddWithValue("@SubEventID", subEventId);
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        estimatedAttendance = reader.GetInt32(reader.GetOrdinal("EstimatedAttendance"));
+                    }
+                }
+            }
+            return estimatedAttendance;
+        }
+
+        public static int GetEstimatedAttendanceForEvent(int eventId)
+        {
+            int estimatedAttendance = 0;
+            using (var connection = new SqlConnection(CapDBConnString))
+            {
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT EstimatedAttendance FROM Event WHERE EventID = @EventID";
+                command.Parameters.AddWithValue("@EventID", eventId);
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        estimatedAttendance = reader.GetInt32(reader.GetOrdinal("EstimatedAttendance"));
+                    }
+                }
+            }
+            return estimatedAttendance;
+        }
+
+
+
+
 
 
     }
