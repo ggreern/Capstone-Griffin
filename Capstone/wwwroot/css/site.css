@@ -5,9 +5,9 @@ body, html {
     font-family: 'Public Sans', sans-serif;
 }
 
-main {
-    padding-top: 100px;
-    padding-left: 200px;
+#main {
+    padding-top: 3000px;
+    padding-left: 3000px;
     background-color: #F0F3F2;
 }
 
@@ -203,3 +203,28 @@ h1.logo {
         font-weight: 700;
         text-decoration: none;
     }
+
+    /* CSS for Sign Up*/
+.form-signin {
+    max-width: 330px;
+    padding: 1rem;
+}
+
+    .form-signin .form-floating:focus-within {
+        z-index: 2;
+    }
+
+    .form-signin input[type="email"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+
+
