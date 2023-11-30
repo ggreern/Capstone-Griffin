@@ -29,13 +29,10 @@ namespace Capstone.Pages.Events
 
             if (userId.HasValue)
             {
-                
+                // Add user to the EventRegistration table
+                DBClass.AddEventRegistration(userId.Value, eventId);
 
-                    // Add user to the EventRegistration table
-                    DBClass.AddEventRegistration(userId.Value, eventId);
-
-                    ViewData["SignUpMessage"] = "Event sign-up successful!";
-                
+                ViewData["SignUpMessage"] = "Event sign-up successful!";
             }
             else
             {
@@ -45,6 +42,7 @@ namespace Capstone.Pages.Events
             // Refresh the page to reflect the updated sign-up status
             return RedirectToPage("/Menu");
         }
+
     }
 }
 

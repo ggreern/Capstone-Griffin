@@ -34,7 +34,13 @@
 
         <div class="form-group">
             <label for="HostID">Host</label>
-            <input class="stylefield" asp-for="Subevent.HostID" type="text" class="form-control" id="HostID" name="HostID" placeholder="Enter Host Name">
+            <select asp-for="Subevent.HostID" class="form-control" id="HostID" name="HostID">
+                <option value="">Select Host</option>
+                @foreach (var user in Model.Users)
+                {
+                    <option value="@user.UserID">@($"{user.FirstName} {user.LastName}")</option>
+                }
+            </select>
         </div>
 
 

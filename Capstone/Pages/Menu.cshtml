@@ -75,15 +75,19 @@
                 <h1 class="h2">My Upcoming Events</h1>
             </div>
             <div class="row">
-                <!-- Replace with dynamic event content -->
-                <div class="col-12 col-lg-6 mb-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <!-- Placeholder for Event 1 -->
+                @foreach (var ev in Model.UpcomingEvents)
+                {
+                    <div class="col-12 col-lg-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">@ev.Name</h5>
+                                <p class="card-text">@ev.Description</p>
+                                <p class="card-text">@ev.StartDate - @ev.EndDate</p>
+                                <!-- Add more details as needed -->
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- More events... -->
+                }
             </div>
 
             <!-- Calendar Section -->

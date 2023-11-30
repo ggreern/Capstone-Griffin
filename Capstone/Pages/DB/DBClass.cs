@@ -12,11 +12,11 @@ namespace Capstone.Pages.DB
     {
         public static SqlConnection CapDBConn = new SqlConnection();
         //AWS Connection String
-        private static readonly string CapDBConnString =
-            @"Server=capstone.chp6q2y6rmvw.us-east-2.rds.amazonaws.com;Database=Capstone;User Id=admin;Password=Capstone12#;Trusted_Connection = False;TrustServerCertificate=true;";
+        //private static readonly string CapDBConnString =
+            //@"Server=capstone.chp6q2y6rmvw.us-east-2.rds.amazonaws.com;Database=Capstone;User Id=admin;Password=Capstone12#;Trusted_Connection = False;TrustServerCertificate=true;";
 
-        private static readonly string AuthConnString =
-            @"Server=capstone.chp6q2y6rmvw.us-east-2.rds.amazonaws.com;Database=AUTH;User Id=admin;Password=Capstone12#;Trusted_Connection=False;TrustServerCertificate=True";
+       // private static readonly string AuthConnString =
+           // @"Server=capstone.chp6q2y6rmvw.us-east-2.rds.amazonaws.com;Database=AUTH;User Id=admin;Password=Capstone12#;Trusted_Connection=False;TrustServerCertificate=True";
 
         /*private static readonly string CapDBConnString
             = @"capstone.chp6q2y6rmvw.us-east-2.rds.amazonaws.com;
@@ -26,8 +26,8 @@ namespace Capstone.Pages.DB
                     Database=AUTH;uid=admin;password=Capstone12#";*/
 
         //Local Host Conn
-        //public static readonly String CapDBConnString = "Server = Localhost;Database = Cap;Trusted_Connection = True;TrustServerCertificate=true;";
-        //private static readonly String? AuthConnString = "Server=Localhost;Database=AUTH;Trusted_Connection=True;TrustServerCertificate=True";
+        public static readonly String CapDBConnString = "Server = Localhost;Database = Cap;Trusted_Connection = True;TrustServerCertificate=true;";
+        private static readonly String? AuthConnString = "Server=Localhost;Database=AUTH;Trusted_Connection=True;TrustServerCertificate=True";
 
 
         public static void InsertEvent(Event eventModel)
@@ -295,7 +295,7 @@ namespace Capstone.Pages.DB
             using (var connection = new SqlConnection(CapDBConnString))
             {
                 var command = connection.CreateCommand();
-                command.CommandText = "INSERT INTO SubEvent (Name, Description, SubEventType, EstimatedAttendance, EventID, HostID) VALUES (@Name, @Description, @SubEventType, @EstimatedAttendance, @EventID, @HostID)";
+                command.CommandText = @"INSERT INTO SubEvent (Name, Description, SubEventType, EstimatedAttendance, EventID, HostID) VALUES (@Name, @Description, @SubEventType, @EstimatedAttendance, @EventID, @HostID)";
                 command.Parameters.AddWithValue("@Name", subEvent.Name);
                 command.Parameters.AddWithValue("@Description", subEvent.Description);
                 command.Parameters.AddWithValue("@SubEventType", subEvent.SubEventType);
@@ -623,6 +623,143 @@ namespace Capstone.Pages.DB
                 }
             }
             return estimatedAttendance;
+        }
+
+        public static List<User> GetUsers()
+        {
+            List<User> users = new List<User>();
+
+            using (SqlConnection connection = new SqlConnection(CapDBConnString))
+            {
+                connection.Open();
+
+                string sqlQuery = "SELECT FirstName, LastName FROM [User]";
+
+                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            User user = new User
+                            {
+
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                LastName = reader.GetString(reader.GetOrdinal("LastName"))
+                            };
+
+                            users.Add(user);
+                        }
+                    }
+                }
+            }
+
+            return users;
+        }
+
+
+        public static List<Event> GetEventsForAttendee(int userId)
+        {
+            List<Event> events = new List<Event>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(CapDBConnString))
+                {
+                    connection.Open();
+
+                    // Fetch events for the attendee based on EventRegistration
+                    string query = @"
+                SELECT Event.* 
+                FROM Event
+                INNER JOIN EventRegistration ON Event.EventID = EventRegistration.EventID
+                WHERE EventRegistration.UserID = @UserID";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserID", userId);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Event ev = new Event
+                                {
+                                    EventID = reader.GetInt32(reader.GetOrdinal("EventID")),
+                                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                                    Description = reader.GetString(reader.GetOrdinal("Description")),
+                                    Address = reader.GetString(reader.GetOrdinal("Address")),
+                                    StartDate = reader.GetDateTime(reader.GetOrdinal("StartDate")).ToString(),
+                                    EndDate = reader.GetDateTime(reader.GetOrdinal("EndDate")).ToString(),
+                                    RegistrationCost = (int)reader.GetDecimal(reader.GetOrdinal("RegistrationCost")),
+                                    EventType = reader.GetString(reader.GetOrdinal("EventType")),
+                                    EstimatedAttendance = reader.GetInt32(reader.GetOrdinal("EstimatedAttendance")),
+                                    OrganizerID = reader.GetInt32(reader.GetOrdinal("OrganizerID"))
+                                };
+
+                                events.Add(ev);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (log, throw, or handle as appropriate)
+                Console.WriteLine($"Error in GetEventsForAttendee: {ex.Message}");
+            }
+
+            return events;
+        }
+
+        public static List<Event> GetEventsForOrganizer(int userId)
+        {
+            List<Event> events = new List<Event>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(CapDBConnString))
+                {
+                    connection.Open();
+
+                    // Fetch events for the organizer based on OrganizerID in Event table
+                    string query = "SELECT * FROM Event WHERE OrganizerID = @OrganizerID";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@OrganizerID", userId);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Event ev = new Event
+                                {
+                                    EventID = reader.GetInt32(reader.GetOrdinal("EventID")),
+                                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                                    Description = reader.GetString(reader.GetOrdinal("Description")),
+                                    Address = reader.GetString(reader.GetOrdinal("Address")),
+                                    StartDate = reader.GetDateTime(reader.GetOrdinal("StartDate")).ToString(),
+                                    EndDate = reader.GetDateTime(reader.GetOrdinal("EndDate")).ToString(),
+                                    RegistrationCost = (int)reader.GetDecimal(reader.GetOrdinal("RegistrationCost")),
+                                    EventType = reader.GetString(reader.GetOrdinal("EventType")),
+                                    EstimatedAttendance = reader.GetInt32(reader.GetOrdinal("EstimatedAttendance")),
+                                    OrganizerID = reader.GetInt32(reader.GetOrdinal("OrganizerID"))
+                                };
+
+                                events.Add(ev);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (log, throw, or handle as appropriate)
+                Console.WriteLine($"Error in GetEventsForOrganizer: {ex.Message}");
+            }
+
+            return events;
         }
 
 

@@ -14,11 +14,14 @@ namespace Capstone.Pages.Subevents
         [BindProperty]
         public SubEvent Subevent { get; set; }
 
+        public List<User> Users { get; set; }
+
 
         public void OnGet()
         {
             //string selectedEvent = HttpContext.Session.GetString("SelectedEvent");
             //SqlDataReader c = DBClass.GetEventID(selectedEvent);
+            Users = DBClass.GetUsers();
         }
 
 

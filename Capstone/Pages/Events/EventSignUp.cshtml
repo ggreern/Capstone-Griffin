@@ -16,10 +16,10 @@
                 <p>@eventItem.Description</p>
                 <p>@eventItem.EventID</p>
 
-                    
 
 
-                <button type="button" onclick="location.href='@Url.Page("EventSignUp", "SignUp", new { eventId = eventItem.EventID })'">Sign Up</button>
+
+                    <button type="submit" asp-page-handler="SignUp" asp-route-eventId="@eventItem.EventID">Sign Up</button>
 
             </div>
             <hr />
