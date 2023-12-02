@@ -10,19 +10,24 @@ namespace Capstone.Pages.Events
 {
     public class EventApprovalModel : PageModel
     {
-        public List<Event> RequestedEvents { get; set; }
+        //public List<Event> RequestedEvents { get; set; }
 
         public Event AddEvent { get; set; }
 
+        public class EventWithUserInfo : Event
+        {
+            public string OrganizerName { get; set; }
+        }
 
+        public List<EventWithUserInfo> RequestedEvents { get; set; }
 
         public void OnGet()
         {
-            RequestedEvents = new List<Event>();
+            RequestedEvents = new List<EventWithUserInfo>();
             SqlDataReader getEvents = DBClass.GetRequestedEvents();
-          
-                while (getEvents.Read())
-                {
+
+            while (getEvents.Read())
+            {
                 int organizerID = Convert.IsDBNull(getEvents["OrganizerID"]) ? 0 : (int)getEvents["OrganizerID"];
 
                 // Skip the current iteration if OrganizerID is null
@@ -31,37 +36,27 @@ namespace Capstone.Pages.Events
                     continue;
                 }
 
+                // Fetch user information based on OrganizerID
+                User organizer = DBClass.GetUserById(organizerID);
 
-                RequestedEvents.Add(new Event
-                    {
-
-                        Name = getEvents["Name"].ToString(),
-                        Address = getEvents["Address"].ToString(),
-                        StartDate = getEvents["StartDate"].ToString(),
-                        EndDate = getEvents["EndDate"].ToString(),
-                        EventType = getEvents["EventType"].ToString(),
-                        Description = getEvents["Description"].ToString(),
-                        OrganizerID = (int)getEvents["OrganizerID"],
-
-
-                        RegistrationCost = (int)Convert.ToDecimal(getEvents["RegistrationCost"]),
-                        EstimatedAttendance = (int)Convert.ToDecimal(getEvents["EstimatedAttendance"]),
-
-                        
-
-
-                    });
-
-
-                }
-
-            
+                RequestedEvents.Add(new EventWithUserInfo
+                {
+                    Name = getEvents["Name"].ToString(),
+                    Address = getEvents["Address"].ToString(),
+                    StartDate = getEvents["StartDate"].ToString(),
+                    EndDate = getEvents["EndDate"].ToString(),
+                    EventType = getEvents["EventType"].ToString(),
+                    Description = getEvents["Description"].ToString(),
+                    OrganizerID = organizerID,
+                    RegistrationCost = (int)Convert.ToDecimal(getEvents["RegistrationCost"]),
+                    EstimatedAttendance = (int)Convert.ToDecimal(getEvents["EstimatedAttendance"]),
+                    OrganizerName = $"{organizer.FirstName} {organizer.LastName}", // Include OrganizerName
+                });
+            }
 
             DBClass.CapDBConn.Close();
-
-
-
         }
+
 
         public IActionResult OnPostApprove(string EventName)
         {

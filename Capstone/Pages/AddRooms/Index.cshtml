@@ -1,0 +1,24 @@
+﻿@page
+@model Capstone.Pages.AddRooms.IndexModel
+
+<h2>Add Room</h2>
+
+<form method="post">
+    <div>
+        <label for="Name">Name:</label>
+        <input type="text" asp-for="Room.Name" />
+    </div>
+    <div>
+        <label for="RoomType">Room Type:</label>
+        <input type="text" asp-for="Room.RoomType" />
+    </div>
+    <div>
+        <label for="Description">Description:</label>
+        <input type="text" asp-for="Room.Description" />
+    </div>
+    <div>
+        <label for="Capacity">Capacity:</label>
+        <input type="number" asp-for="Room.Capacity" />
+    </div>
+    <button type="submit" class="btn btn-primary">Add Room</button>
+</form>

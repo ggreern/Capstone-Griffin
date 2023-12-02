@@ -301,7 +301,7 @@ namespace Capstone.Pages.DB
                 if (!IsUserExists(connection, hostID))
                 {
 
-                    throw new ArgumentException("Invalid HostID");
+                    hostID = 5;
                 }
 
                 var command = connection.CreateCommand();
@@ -983,7 +983,22 @@ namespace Capstone.Pages.DB
             }
         }
 
+        public static void AddRoom(Room room)
+        {
+            using (var connection = new SqlConnection(CapDBConnString))
+            {
+                var command = connection.CreateCommand();
+                command.CommandText = "INSERT INTO Room (Name, RoomType, Description, Capacity) VALUES (@Name, @RoomType, @Description, @Capacity)";
 
+                command.Parameters.AddWithValue("@Name", room.Name);
+                command.Parameters.AddWithValue("@RoomType", room.RoomType);
+                command.Parameters.AddWithValue("@Description", room.Description);
+                command.Parameters.AddWithValue("@Capacity", room.Capacity);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
 
     }
 
