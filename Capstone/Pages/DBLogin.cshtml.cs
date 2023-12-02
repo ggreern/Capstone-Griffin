@@ -20,6 +20,10 @@ namespace Capstone.Pages
                 // Get UserID by username
                 int userID = DBClass.GetUserIDByName(Username);
 
+                string userType = DBClass.GetUserTypeByName(Username);
+                ViewData["userType"] = userType;
+
+
                 // Set UserID in session state
                 HttpContext.Session.SetInt32("userID", userID);
 

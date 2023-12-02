@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace Capstone.Pages.Subevents
 {
@@ -18,7 +19,6 @@ namespace Capstone.Pages.Subevents
         public void OnGet()
         {
             EventList = DBClass.GetAllEvents(); // Implement this to fetch all events
-
         }
 
         public IActionResult OnPost()
@@ -28,9 +28,17 @@ namespace Capstone.Pages.Subevents
             if (!ModelState.IsValid)
             {
                 return Page();
-            } 
+            }
+
             return RedirectToPage("./NewSubEvent");
         }
 
+        // Add a new action method to handle the View Attendance button click
+        public IActionResult OnPostViewAttendance()
+        {
+            // Redirect to the EventAttendance page and pass the selected event ID
+            return RedirectToPage("/Events/EventAttendance", new { eventId = Event.EventID });
+        }
     }
 }
+

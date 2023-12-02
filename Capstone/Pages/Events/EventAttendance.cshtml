@@ -1,0 +1,29 @@
+﻿@page "{eventId:int}"
+@model Capstone.Pages.Attendance.EventAttendanceModel
+@{
+    ViewData["Title"] = "Event Attendance";
+}
+
+<h2>Event Attendance</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.FirstName</td>
+                <td>@user.LastName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+            </tr>
+        }
+    </tbody>
+</table>

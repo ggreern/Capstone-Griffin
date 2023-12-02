@@ -2,10 +2,8 @@ using Capstone.Pages.Data_Classes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Capstone.Pages.DB;
-using Capstone.Pages.Data_Classes;
-using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Http;
-using System.Reflection;
+using System.Collections.Generic;
 
 namespace Capstone.Pages.Subevents
 {
@@ -16,32 +14,27 @@ namespace Capstone.Pages.Subevents
 
         public List<User> Users { get; set; }
 
-
         public void OnGet()
         {
-            //string selectedEvent = HttpContext.Session.GetString("SelectedEvent");
-            //SqlDataReader c = DBClass.GetEventID(selectedEvent);
             Users = DBClass.GetUsers();
         }
 
-
         public IActionResult OnPost()
         {
-            string hostName = Request.Form["HostID"];
-
-            int hostID = DBClass.GetUserIDByName(hostName);
+            // Retrieve the selected HostID directly from the form
+            int hostID = int.Parse(Request.Form["HostID"]);
 
             Subevent.HostID = hostID;
-
-
 
             int selectedEvent = (int)HttpContext.Session.GetInt32("SelectedEvent");
             Subevent.EventID = selectedEvent;
 
-            // Call your AddSubEvent method
             DBClass.AddSubEvent(Subevent);
-            return Page();
+
+            // Redirect to the AddSubActivity page in the same folder
+            return RedirectToPage("AddSubActivity");
         }
+
 
     }
 }

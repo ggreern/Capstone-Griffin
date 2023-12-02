@@ -4,21 +4,33 @@
 
 <link href="css/custom.css" rel="stylesheet" />
 
-<form method="post">
+<form method="post" asp-action="AssignRoom">
     <label for="event">Select Event:</label>
     <select asp-for="SelectedEventId" asp-items="Model.Events">
         <option value="">-- Select an Event --</option>
     </select>
-    <button type="submit" class="btnstyle btn btn-primary">Create SubEvents</button>
-</form>
 
-@if (Model.SuggestedRooms != null)
-{
-    <h3>Suggested Rooms</h3>
-    <ul>
-        @foreach (var room in Model.SuggestedRooms)
-        {
-            <li>@room.Name - Capacity: @room.Capacity</li>
-        }
-    </ul>
-}
+    @if (Model.SuggestedRooms != null && Model.SuggestedRooms.Any())
+    {
+        <h3>Suggested Rooms</h3>
+        <table>
+            <tr>
+                <th>Room Name</th>
+                <th>Capacity</th>
+                <th>Select</th>
+            </tr>
+            @foreach (var room in Model.SuggestedRooms)
+            {
+                <tr>
+                    <td>@room.Name</td>
+                    <td>@room.Capacity</td>
+                    <td>
+                        <input type="radio" name="SelectedRoomId" value="@room.RoomID" />
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+
+    <button type="submit" class="btn btn-success">Select Room</button>
+</form>

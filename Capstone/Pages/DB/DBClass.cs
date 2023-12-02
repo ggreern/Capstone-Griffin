@@ -294,17 +294,42 @@ namespace Capstone.Pages.DB
         {
             using (var connection = new SqlConnection(CapDBConnString))
             {
+                connection.Open();
+
+                
+                int hostID = subEvent.HostID;
+                if (!IsUserExists(connection, hostID))
+                {
+
+                    throw new ArgumentException("Invalid HostID");
+                }
+
                 var command = connection.CreateCommand();
-                command.CommandText = @"INSERT INTO SubEvent (Name, Description, SubEventType, EstimatedAttendance, EventID, HostID) VALUES (@Name, @Description, @SubEventType, @EstimatedAttendance, @EventID, @HostID)";
+                command.CommandText = @"INSERT INTO SubEvent (Name, Description, SubEventType, EstimatedAttendance, EventID, HostID) 
+                        VALUES (@Name, @Description, @SubEventType, @EstimatedAttendance, @EventID, @HostID)";
+
                 command.Parameters.AddWithValue("@Name", subEvent.Name);
                 command.Parameters.AddWithValue("@Description", subEvent.Description);
                 command.Parameters.AddWithValue("@SubEventType", subEvent.SubEventType);
                 command.Parameters.AddWithValue("@EstimatedAttendance", subEvent.EstimatedAttendance);
                 command.Parameters.AddWithValue("@EventID", subEvent.EventID);
-                command.Parameters.AddWithValue("@HostID", subEvent.HostID);
+                command.Parameters.AddWithValue("@HostID", hostID);
 
-                connection.Open();
                 command.ExecuteNonQuery();
+            }
+        }
+
+
+        
+        private static bool IsUserExists(SqlConnection connection, int userID)
+        {
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT COUNT(*) FROM [User] WHERE UserID = @UserID";
+                command.Parameters.AddWithValue("@UserID", userID);
+
+                int count = (int)command.ExecuteScalar();
+                return count > 0;
             }
         }
 
@@ -353,6 +378,40 @@ namespace Capstone.Pages.DB
             return userID;
         }
 
+        public static int GetUserIDByFullName(string firstName, string lastName)
+        {
+            int userID = 0;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(CapDBConnString))
+                {
+                    connection.Open();
+
+                    // Modify the SQL query to match first and last names
+                    using (SqlCommand command = new SqlCommand("SELECT UserID FROM [User] WHERE FirstName = @FirstName AND LastName = @LastName", connection))
+                    {
+                        command.Parameters.AddWithValue("@FirstName", firstName);
+                        command.Parameters.AddWithValue("@LastName", lastName);
+
+                        object result = command.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            userID = Convert.ToInt32(result);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (log, throw, or handle as appropriate)
+                Console.WriteLine($"Error in GetUserIDByName: {ex.Message}");
+                // You might want to log or throw the exception, or handle it in a way that's suitable for your application.
+            }
+
+            return userID;
+        }
 
 
         public static string GetUserTypeFromSession(HttpContext httpContext)
@@ -762,10 +821,171 @@ namespace Capstone.Pages.DB
             return events;
         }
 
+        public static void AddSubActivity(SubActivity subActivity)
+        {
+            using (var connection = new SqlConnection(CapDBConnString))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = @"INSERT INTO SubActivity (Name, Description, SubEventID) 
+                        VALUES (@Name, @Description, @SubEventID)";
+
+                command.Parameters.AddWithValue("@Name", subActivity.Name);
+                command.Parameters.AddWithValue("@Description", subActivity.Description);
+                command.Parameters.AddWithValue("@SubEventID", subActivity.SubEventID);
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static List<SubEvent> GetSubEvents()
+        {
+            List<SubEvent> subEvents = new List<SubEvent>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(CapDBConnString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SELECT * FROM SubEvent", connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                SubEvent subEvent = new SubEvent
+                                {
+                                    SubEventID = Convert.ToInt32(reader["SubEventID"]),
+                                    Name = Convert.ToString(reader["Name"]),
+                                    // Add other properties as needed
+                                };
+
+                                subEvents.Add(subEvent);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in GetSubEvents: {ex.Message}");
+            }
+
+            return subEvents;
+        }
 
 
+
+        public static List<EventRegistration> GetEventRegistrationsByEventId(int eventId)
+        {
+            List<EventRegistration> eventRegistrations = new List<EventRegistration>();
+
+            using (var connection = new SqlConnection(CapDBConnString))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = @"SELECT * FROM EventRegistration WHERE EventID = @EventID";
+                command.Parameters.AddWithValue("@EventID", eventId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var registration = new EventRegistration
+                        {
+                            UserID = (int)reader["UserID"],
+                            EventID = (int)reader["EventID"]
+                            // Add other properties as needed
+                        };
+                        eventRegistrations.Add(registration);
+                    }
+                }
+            }
+
+            return eventRegistrations;
+        }
+
+        public static User GetUserById(int userId)
+        {
+            using (var connection = new SqlConnection(CapDBConnString))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = @"SELECT * FROM [User] WHERE UserID = @UserID";
+                command.Parameters.AddWithValue("@UserID", userId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        var user = new User
+                        {
+                            UserID = (int)reader["UserID"],
+                            FirstName = reader["FirstName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            PhoneNumber = reader["PhoneNumber"].ToString(),
+                            Username = reader["Username"].ToString(),
+                            UserType = reader["UserType"].ToString()
+                            // Add other properties as needed
+                        };
+                        return user;
+                    }
+                }
+            }
+
+            return null; // Return null if user is not found
+        }
+
+        public static List<User> GetAllUsers()
+        {
+            List<User> users = new List<User>();
+            using (var connection = new SqlConnection(CapDBConnString))
+            {
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT * from [User]";
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        users.Add(new User
+                        {
+                            FirstName = reader["FirstName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            PhoneNumber = reader["PhoneNumber"].ToString(),
+                            Username = reader["Username"].ToString(),
+                            UserType = reader["UserType"].ToString()
+                        });
+                    }
+                }
+            }
+            return users;
+        }
+
+        public static void AssignRoomToEvent(int eventId, int roomId)
+        {
+            using (var connection = new SqlConnection(CapDBConnString))
+            {
+                var command = connection.CreateCommand();
+                command.CommandText = "UPDATE Event SET RoomID = @RoomID WHERE EventID = @EventID";
+                command.Parameters.AddWithValue("@EventID", eventId);
+                command.Parameters.AddWithValue("@RoomID", roomId);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
 
 
 
     }
+
+
 }

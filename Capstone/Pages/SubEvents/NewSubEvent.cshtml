@@ -36,9 +36,12 @@
             <label for="HostID">Host</label>
             <select asp-for="Subevent.HostID" class="form-control" id="HostID" name="HostID">
                 <option value="">Select Host</option>
-                @foreach (var user in Model.Users)
+                @if (Model.Users != null)
                 {
-                    <option value="@user.UserID">@($"{user.FirstName} {user.LastName}")</option>
+                    foreach (var user in Model.Users)
+                    {
+                        <option value="@user.UserID">@($"{user.FirstName} {user.LastName}")</option>
+                    }
                 }
             </select>
         </div>
@@ -60,6 +63,8 @@
             document.getElementById("Description").value = "Come enhance your Python Skills!";
             document.getElementById("SubEventType").value = "Workshop";
             document.getElementById("EstimatedAttendance").value = 50;
+
+            // Assuming "Ted Lasso" is a valid entry in your dropdown list
             document.getElementById("HostID").value = "Ted Lasso";
         }
     </script>

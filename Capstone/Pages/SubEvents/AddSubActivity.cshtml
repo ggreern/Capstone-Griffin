@@ -1,0 +1,40 @@
+﻿@page
+@model Capstone.Pages.Subevents.AddSubActivityModel
+@{
+}
+
+<link href="~/css/site.css" rel="stylesheet" />
+
+<section id="addSUBactivitypage">
+    <h2>Enter Sub-Activity Information</h2>
+    <form id="addactivityform" method="post" asp-action="SubActivity">
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <input class="stylefield" type="text" asp-for="SubActivity.Name" class="form-control" id="Name" name="Name" placeholder="Enter subactivity name">
+        </div>
+
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <textarea class="stylefield" asp-for="SubActivity.Description" class="form-control" id="Description" name="Description" placeholder="Enter description"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="SubEventID">SubEvent</label>
+            <select asp-for="SubActivity.SubEventID" class="form-control" id="SubEventID" name="SubEventID">
+                <option value="">Select SubEvent</option>
+                @if (Model.SubEvents != null)
+                {
+                    foreach (var subEvent in Model.SubEvents)
+                    {
+                        <option value="@subEvent.SubEventID">@subEvent.Name</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <button class="btnstyle" type="submit" class="btn btn-primary">Submit</button>
+        
+    </form>
+
+    
+
