@@ -1,0 +1,44 @@
+﻿@page
+@model Capstone.Pages.AdminPage.AdminEventReportModel
+@{
+}
+
+<h2>Event Report</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Address</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Registration Cost</th>
+            <th>Event Type</th>
+            <th>Estimated Attendance</th>
+            <th></th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.AdminReportData)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Address</td>
+                <td>@item.StartDate</td>
+                <td>@item.EndDate</td>
+                <td>@item.RegistrationCost</td>
+                <td>@item.EventType</td>
+                <td>@item.EstimatedAttendance</td>
+                <td>
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@item.EventID" onsubmit="return confirm('Deleting this Event will subsequently delete all Subevents associated with it. Would you like to continue?')">
+                        <button type="submit" class="btn btn-danger">Delete User</button>
+                    </form>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

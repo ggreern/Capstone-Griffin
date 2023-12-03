@@ -692,7 +692,7 @@ namespace Capstone.Pages.DB
             {
                 connection.Open();
 
-                string sqlQuery = "SELECT FirstName, LastName FROM [User]";
+                string sqlQuery = "SELECT * FROM [User]";
 
                 using (SqlCommand command = new SqlCommand(sqlQuery, connection))
                 {
@@ -702,7 +702,7 @@ namespace Capstone.Pages.DB
                         {
                             User user = new User
                             {
-
+                                UserID = (int)reader.GetInt32(reader.GetOrdinal("UserID")),
                                 FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
                                 LastName = reader.GetString(reader.GetOrdinal("LastName"))
                             };
@@ -999,6 +999,106 @@ namespace Capstone.Pages.DB
                 command.ExecuteNonQuery();
             }
         }
+
+
+        public static void DeleteUser(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(CapDBConnString))
+            {
+                connection.Open();
+
+                string sqlQuery = "DELETE FROM [User] WHERE UserID = @UserID";
+
+                using (SqlCommand cmdProductRead = new SqlCommand(sqlQuery, connection))
+                {
+                    cmdProductRead.Parameters.AddWithValue("@UserID", id);
+
+
+                    cmdProductRead.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        public static List<Event> AdminEventList()
+        {
+            List<Event> events = new List<Event>();
+
+            using (SqlConnection connection = new SqlConnection(CapDBConnString))
+            {
+                connection.Open();
+
+                string sqlQuery = "SELECT * FROM Event";
+
+                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Event eventItem = new Event
+                            {
+                                EventID = reader.GetInt32(reader.GetOrdinal("EventID")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                Description = reader.GetString(reader.GetOrdinal("Description")),
+                                Address = reader.GetString(reader.GetOrdinal("Address")),
+                                StartDate = reader.GetDateTime(reader.GetOrdinal("StartDate")).ToString(),
+                                EndDate = reader.GetDateTime(reader.GetOrdinal("EndDate")).ToString(),
+                                RegistrationCost = (int)reader.GetDecimal(reader.GetOrdinal("RegistrationCost")),
+                                EventType = reader.GetString(reader.GetOrdinal("EventType")),
+                                EstimatedAttendance = reader.GetInt32(reader.GetOrdinal("EstimatedAttendance"))
+
+
+                            };
+
+                            events.Add(eventItem);
+                        }
+                    }
+                }
+            }
+
+            return events;
+        }
+
+        public static void DeleteEvent(int id)
+        {
+            DeleteSubEvent(id);
+
+            using (SqlConnection connection = new SqlConnection(CapDBConnString))
+            {
+                connection.Open();
+
+                string sqlQuery = "DELETE FROM Event WHERE EventID = @EventID";
+
+                using (SqlCommand cmdProductRead = new SqlCommand(sqlQuery, connection))
+                {
+                    cmdProductRead.Parameters.AddWithValue("@EventID", id);
+
+
+                    cmdProductRead.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void DeleteSubEvent(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(CapDBConnString))
+            {
+                connection.Open();
+
+                string sqlQuery = "DELETE FROM SubEvent WHERE EventID = @EventID";
+
+                using (SqlCommand cmdProductRead = new SqlCommand(sqlQuery, connection))
+                {
+                    cmdProductRead.Parameters.AddWithValue("@EventID", id);
+
+
+                    cmdProductRead.ExecuteNonQuery();
+                }
+            }
+        }
+
+
 
     }
 

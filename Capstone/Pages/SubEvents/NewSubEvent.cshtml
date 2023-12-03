@@ -1,5 +1,5 @@
 ﻿@page
-@model Capstone.Pages.Subevents.NewSubEventModel
+@model Capstone.Pages.SubEvents.NewSubEventModel;
 @{
 }
 
@@ -11,30 +11,30 @@
 
 <section id="addSUBeventpage">
     <h2>Enter Sub-Event Information</h2>
-    <form id="addeventform" method="post" asp-action="AddSubEvent">
+    <form id="addeventform" method="post" asp-page="NewSubEvent">
         <div class="form-group">
-            <label for="Name">Name</label>
-            <input class="stylefield" type="text" asp-for="Subevent.Name" class="form-control" id="Name" name="Name" placeholder="Enter subevent name">
+            <label>Name</label>
+            <input class="stylefield" type="text" asp-for="Subevent.Name" class="form-control" placeholder="Enter subevent name">
         </div>
 
         <div class="form-group">
             <label for="Description">Description</label>
-            <textarea class="stylefield" asp-for="Subevent.Description" class="form-control" id="Description" name="Description" placeholder="Enter description"></textarea>
+            <textarea class="stylefield" asp-for="Subevent.Description" class="form-control"  placeholder="Enter description"></textarea>
         </div>
 
         <div class="form-group">
             <label for="SubEventType">SubEvent Type</label>
-            <input class="stylefield" asp-for="Subevent.SubEventType" type="text" class="form-control" id="SubEventType" name="SubEventType" placeholder="Enter sub event type">
+            <input class="stylefield" asp-for="Subevent.SubEventType" type="text" class="form-control"  placeholder="Enter sub event type">
         </div>
 
         <div class="form-group">
             <label for="EstimatedAttendance">Estimated Attendance</label>
-            <input class="stylefield" asp-for="Subevent.EstimatedAttendance" type="number" class="form-control" id="EstimatedAttendance" name="EstimatedAttendance" placeholder="Enter estimated attendance">
+            <input class="stylefield" asp-for="Subevent.EstimatedAttendance" type="number" class="form-control"  placeholder="Enter estimated attendance">
         </div>
 
         <div class="form-group">
             <label for="HostID">Host</label>
-            <select asp-for="Subevent.HostID" class="form-control" id="HostID" name="HostID">
+            <select asp-for="Subevent.HostID" class="form-control">
                 <option value="">Select Host</option>
                 @if (Model.Users != null)
                 {

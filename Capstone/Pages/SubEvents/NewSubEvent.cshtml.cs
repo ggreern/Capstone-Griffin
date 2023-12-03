@@ -5,7 +5,7 @@ using Capstone.Pages.DB;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
-namespace Capstone.Pages.Subevents
+namespace Capstone.Pages.SubEvents
 {
     public class NewSubEventModel : PageModel
     {
@@ -22,9 +22,9 @@ namespace Capstone.Pages.Subevents
         public IActionResult OnPost()
         {
             // Retrieve the selected HostID directly from the form
-            int hostID = int.Parse(Request.Form["HostID"]);
+            //int hostID = int.Parse(Request.Form["HostID"]);
 
-            Subevent.HostID = hostID;
+            //Subevent.HostID = hostID;
 
             int selectedEvent = (int)HttpContext.Session.GetInt32("SelectedEvent");
             Subevent.EventID = selectedEvent;
