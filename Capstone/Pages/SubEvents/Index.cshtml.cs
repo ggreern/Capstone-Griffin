@@ -36,6 +36,7 @@ namespace Capstone.Pages.Subevents
         // Add a new action method to handle the View Attendance button click
         public IActionResult OnPostViewAttendance()
         {
+            HttpContext.Session.SetInt32("SelectedEvent", Event.EventID);
             // Redirect to the EventAttendance page and pass the selected event ID
             return RedirectToPage("/Events/EventAttendance", new { eventId = Event.EventID });
         }

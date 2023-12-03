@@ -1098,6 +1098,23 @@ namespace Capstone.Pages.DB
             }
         }
 
+        public static void UpdateUserType(int userID, string userType)
+        {
+            using (var connection = new SqlConnection(CapDBConnString))
+            {
+                connection.Open();
+
+                string updateQuery = "UPDATE [User] SET UserType = @UserType WHERE UserID = @UserID";
+
+                using (var command = new SqlCommand(updateQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@UserID", userID);
+                    command.Parameters.AddWithValue("@UserType", userType);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
 
 
     }

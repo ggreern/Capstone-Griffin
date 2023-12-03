@@ -29,6 +29,12 @@ namespace Capstone.Pages.SubEvents
             int selectedEvent = (int)HttpContext.Session.GetInt32("SelectedEvent");
             Subevent.EventID = selectedEvent;
 
+            // Retrieve the selected HostID directly from the form
+            int hostID = Subevent.HostID;
+
+            // Update the UserType of the selected host to "Host"
+            DBClass.UpdateUserType(hostID, "Host");
+
             DBClass.AddSubEvent(Subevent);
 
             // Redirect to the AddSubActivity page in the same folder

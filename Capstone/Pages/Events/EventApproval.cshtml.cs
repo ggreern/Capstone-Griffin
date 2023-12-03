@@ -63,11 +63,14 @@ namespace Capstone.Pages.Events
             Event approvedEvent = DBClass.GetRequestedEventDetails(EventName);
             if (approvedEvent != null)
             {
-
                 DBClass.InsertEvent(approvedEvent);
+
+                // Update UserType of the associated organizer to "Organizer"
+                int organizerID = approvedEvent.OrganizerID;
+                DBClass.UpdateUserType(organizerID, "Organizer");
+
                 return RedirectToPage("/SubEvents/Index");
             }
-
 
             return RedirectToPage("/SubEvents/Index");
         }
