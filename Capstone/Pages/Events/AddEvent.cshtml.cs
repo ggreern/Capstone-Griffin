@@ -52,7 +52,7 @@ namespace Capstone.Pages.Events
                 DBClass.InsertRequestedEvent(NewEvent);
 
                 // Redirect to the current page for non-Admin users
-                return RedirectToPage("/SubEvents/Index");
+                return RedirectToPage("/Events/Index");
             }
         }
 
