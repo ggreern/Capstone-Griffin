@@ -10,7 +10,7 @@ namespace Capstone.Pages.Events
            
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPostAddEvent()
         {
             return RedirectToPage("AddEvent");
         }
