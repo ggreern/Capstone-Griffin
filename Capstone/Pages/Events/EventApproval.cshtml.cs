@@ -72,7 +72,7 @@ namespace Capstone.Pages.Events
                 return RedirectToPage("/SubEvents/Index");
             }
 
-            return RedirectToPage("/SubEvents/Index");
+            return RedirectToPage("/Events/");
         }
 
 
