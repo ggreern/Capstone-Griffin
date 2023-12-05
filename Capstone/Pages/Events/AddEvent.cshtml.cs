@@ -44,7 +44,7 @@ namespace Capstone.Pages.Events
                 DBClass.InsertRequestedEvent(NewEvent);
 
                 // Redirect to EventApproval page for Admin
-                return RedirectToPage("./EventApproval");
+                return RedirectToPage("./Index");
             }
             else
             {
@@ -52,7 +52,7 @@ namespace Capstone.Pages.Events
                 DBClass.InsertRequestedEvent(NewEvent);
 
                 // Redirect to the current page for non-Admin users
-                return RedirectToPage("/SubEvents/Index");
+                return RedirectToPage("./Index");
             }
         }
 

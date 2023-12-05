@@ -78,7 +78,7 @@ namespace Capstone.Pages.Events
 
         public IActionResult OnPostDeny()
         {
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Menu");
         }
 
 

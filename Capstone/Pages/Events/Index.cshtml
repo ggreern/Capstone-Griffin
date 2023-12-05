@@ -2,13 +2,43 @@
 @model Capstone.Pages.Events.IndexModel
 @{
 }
-<h2>Manage Events</h2>
 
 
-<form asp-page="Index">
-    <button type="AddEvent"> Create Event</button>
-    <button><a class="link" href="/AssignRooms/Index" class="btn btn-primary">Assign Rooms</a></button>
-    <button><a class="link" href="/SubEvents/Index" class="btn btn-primary">Manage Sub-Events</a></button>
-    <button><a class="link" href="/SubEvents/AddSubActivity" class="btn btn-primary">Add a Sub-Activity</a></button>
+<head>
+    <style>
+        .eventindex a {
+            text-decoration: none;
+            color: white;
+            background-color: #648B7F;
+            padding: .5em 2em;
+            border: none;
+            margin-top: 10px;
+            font-size: 17px;
+        }
+    </style>
+</head>
 
-</form>
+
+<h2>Organizer Event Management</h2>
+
+<div class="container">
+
+    <form class="eventindex" asp-page="Index">
+        <div class="row">
+            <div class="col-6 shadow p-3 mb-5 bg-body-tertiary rounded">
+                <h3>Create a new event</h3>
+                @* <button type="AddEvent">Create Event</button><br> *@
+                <a class="link" href="./AddEvent" class="btn btn-primary">Create Event</a>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-8 shadow p-3 mb-5 bg-body-tertiary rounded">
+                <h3>Edit exisiting events</h3>
+                <a class="link" href="/AssignRooms/Index" class="btn btn-primary">Assign Rooms</a>
+                <a class="link" href="/SubEvents/Index" class="btn btn-primary">Manage Sub-Events</a>
+                <a class="link" href="/SubEvents/AddSubActivity" class="btn btn-primary">Add a Sub-Activity</a>
+            </div>
+        </div>
+    </form>
+</div>

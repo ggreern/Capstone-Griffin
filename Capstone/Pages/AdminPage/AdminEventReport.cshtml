@@ -34,7 +34,7 @@
                 <td>@item.EstimatedAttendance</td>
                 <td>
                     <form method="post" asp-page-handler="Delete" asp-route-id="@item.EventID" onsubmit="return confirm('Deleting this Event will subsequently delete all Subevents associated with it. Would you like to continue?')">
-                        <button type="submit" class="btn btn-danger">Delete User</button>
+                        <button type="submit" class="btn btn-danger">Delete Event</button>
                     </form>
                 </td>
 

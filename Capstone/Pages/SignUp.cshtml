@@ -1,8 +1,15 @@
 ﻿@page
 @model Capstone.Pages.SignUpModel
 @{
-}
 
+}
+<head>
+    <style>
+        nav, .side-nav {
+            visibility: hidden!important;
+        }
+    </style>
+</head>
 <form method="post">
     <h1>Register Here!</h1>
     <label>First Name:</label>
@@ -23,7 +30,7 @@
     <label>Password:</label>
     <input type="password" asp-for="Password" required id="Password" />
     <br />
-    <button type="submit">Add User</button>
+    <button type="submit">Register</button>
     <button type="button" class="btn btn-secondary" onclick="populateForm()">Populate</button>
 </form>
 

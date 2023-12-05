@@ -2,11 +2,34 @@
 @model Capstone.Pages.AdminPage.AdminDashboardModel
 @{
 }
-<form asp-page="AdminDashboard">
-    <button><a class="link" href="/Events/EventApproval" class="btn btn-primary">Events waiting for Approval</a></button>
-    <button><a class="link" href="AdminReport" class="btn btn-primary">User Information</a></button>
-    <button><a class="link" href="AdminEventReport" class="btn btn-primary">Event Information</a></button>
+
+<head>
+    <style>
+        .admindash a {
+            text-decoration: none;
+            color: white;
+            background-color: #648B7F;
+            padding: .5em 2em;
+            border: none;
+            margin-top: 10px;
+            font-size: 17px;
+        }
+    </style>
+</head>
 
 
+<h2>Admin Event Management</h2>
 
-</form>
+<div class="container">
+
+    <div class="row">
+        <div class="col-5 shadow p-3 mb-5 bg-body-tertiary rounded">
+
+            <form class="admindash" asp-page="AdminDashboard">
+                <button><a class="link" href="/Events/EventApproval" class="btn">Events Waiting for Approval</a></button><br>
+                <button><a class="link" href="AdminReport" class="btn">User Information</a></button><br>
+                <button><a class="link" href="AdminEventReport" class="btn">Event Information</a></button>
+            </form>
+        </div>
+    </div>
+</div>

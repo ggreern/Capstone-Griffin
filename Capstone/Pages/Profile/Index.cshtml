@@ -1,26 +1,45 @@
 ﻿@page
 @model Capstone.Pages.Profile.IndexModel
+@{
 
+}
+
+
+<div class="container">
+<div class="row justify-content-between">
+    <div class="col-5 shadow p-3 mb-5 bg-body-tertiary rounded text-center">
 <h2>Profile</h2>
 
-@if (Model.CurrentUser != null)
-{
-    <!-- Profile Image Placeholder -->
-    <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #ddd; margin-bottom: 20px;">
+
+            
+                <!-- Profile Image Placeholder -->
+                <div class="text-center mx-auto d-block" style="width: 300px; height: 300px; border-radius: 50%; background-color: #ddd; margin-bottom: 20px;">
+
+                </div>
+
+                <!--   <form method="post" enctype="multipart/form-data" asp-action="UploadImage">
+                <input classs="profimage" type="file" name="profileImage" accept="image/*" /><br>
+                <button type="submit">Upload Profile Picture</button>
+                </form> -->
+                <button class="mx-auto" type="submit">Edit Profile</button>
+            
+</div>
+
+<div class="profileinfo shadow p-3 mb-5 bg-body-tertiary rounded col-6">
+    <h3>Username: </h3>
+        <p>@Model.CurrentUser.Username</p>
+    <h3>Name: </h3>
+        <p>@Model.CurrentUser.FirstName @Model.CurrentUser.LastName</p>
+    <h3>Email: </h3>
+        <p>@Model.CurrentUser.Email</p>
+    <h3>Phone: </h3>
+        <p>@Model.CurrentUser.PhoneNumber</p>
+
         
-    </div>
 
-    <form method="post" enctype="multipart/form-data" asp-action="UploadImage">
-        <input type="file" name="profileImage" accept="image/*" />
-        <button type="submit">Upload Image</button>
-    </form>
 
-    <p>Username: @Model.CurrentUser.Username</p>
-    <p>Name: @Model.CurrentUser.FirstName @Model.CurrentUser.LastName</p>
-    <p>Email: @Model.CurrentUser.Email</p>
-    <p>Phone: @Model.CurrentUser.PhoneNumber</p>
-}
-else
-{
-    <p>User details not found.</p>
-}
+
+
+</div>
+</div>
+</div>

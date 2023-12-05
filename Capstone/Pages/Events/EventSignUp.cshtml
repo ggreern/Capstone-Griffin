@@ -6,26 +6,26 @@
 <h2>Event Sign-Up</h2>
 
 <form method="post" asp-page-handler="SignUp">
-<div>
-    @if (Model.EventModel != null && Model.EventModel.Events != null)
-    {
-        foreach (var eventItem in Model.EventModel.Events)
+    <div>
+        @if (Model.EventModel != null && Model.EventModel.Events != null)
         {
-            <div>
-                <h4>@eventItem.Name</h4>
-                <p>@eventItem.Description</p>
-                <p>@eventItem.EventID</p>
+            foreach (var eventItem in Model.EventModel.Events)
+            {
+                <div class="container">
+                    <div class="row">
+                        <div class="col-11 shadow p-3 mb-5 bg-body-tertiary rounded">
 
-
-
-
-                    <button type="submit" asp-page-handler="SignUp" asp-route-eventId="@eventItem.EventID">Sign Up</button>
-
-            </div>
-            <hr />
+                            <h4>@eventItem.Name</h4>
+                            <p>@eventItem.Description</p>
+                            <p class="d-none">ID: @eventItem.EventID</p>
+                            <!-- <div class="text-start"> -->
+                            <button class="text-start" type="button" onclick="location.href='@Url.Page("EventSignUp", "SignUp", new { eventId = eventItem.EventID })'">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+            }
         }
-    }
-</div>
+    </div>
 </form>
 
 

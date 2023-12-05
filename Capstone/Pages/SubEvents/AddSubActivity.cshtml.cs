@@ -31,7 +31,7 @@ namespace Capstone.Pages.Subevents
             // Call your AddSubActivity method
             DBClass.AddSubActivity(SubActivity);
 
-            return Page();
+            return RedirectToPage("/Events/Index");
         }
     }
 }

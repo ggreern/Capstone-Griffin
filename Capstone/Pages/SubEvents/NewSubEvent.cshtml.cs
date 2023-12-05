@@ -38,7 +38,7 @@ namespace Capstone.Pages.SubEvents
             DBClass.AddSubEvent(Subevent);
 
             // Redirect to the AddSubActivity page in the same folder
-            return RedirectToPage("AddSubActivity");
+            return RedirectToPage("/Events/Index");
         }
 
 

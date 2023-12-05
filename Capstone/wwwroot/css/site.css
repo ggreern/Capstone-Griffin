@@ -56,7 +56,7 @@ main {
 h2 {
     text-transform: uppercase;
     font-weight: 300;
-    font-size: 48px;
+    font-size: 35px;
     color: #26473C;
 }
 
@@ -237,3 +237,34 @@ h1.logo {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
     }
+
+h4 {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 300;
+}
+
+h3 {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 500;
+    font-size: 20px !important;
+    color: #648B7F !important;
+}
+
+.profileinfo {
+    margin-top: 100px !important;
+    border: 4px !important;
+    background-color: white !important;
+}
+
+.profimage {
+    text-align: center !important;
+}
+
+
+?
+?
+
+?
+
+
+
